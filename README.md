@@ -5,6 +5,12 @@ Marius s4865928
 Lennard s2676699
 
 ### How to run
+Start redis server by pulling redis image from the web:
+```shell
+docker run -p 6379:6379 -d redis:5
+```
+
+Run the django server:
 ```shell
 python manage.py makemigrations
 python manage.py migrate
