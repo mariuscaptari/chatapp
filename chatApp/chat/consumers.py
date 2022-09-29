@@ -25,7 +25,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.channel_name
         )
     
-    # Receive message from web socket
+    # Runs when a message is received from a client web socket
     async def receive(self, text_data):
         data = json.loads(text_data)
         message = data['message']
@@ -34,7 +34,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         await self.save_message(username, room, message)
 
-        # Send message to room group
+        # Broadcast message to room group
         await self.channel_layer.group_send(
             self.room_group_name,
             {
