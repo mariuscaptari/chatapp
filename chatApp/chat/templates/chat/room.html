@@ -8,42 +8,77 @@
     </head>
 
     <body>
-        <section class="section">
-            <div class="container">
-                <div class="columns is-multiline">
-                    <div class="column is-4 is-offset-2">
-                        <section class="hero is-primary is-medium has-background-link">
-                            <div class="hero-body">
-                                <p class="title">
-                                    ChatApp
-                                </p>
-                                <p class="subtitle">
-                                    Made by Marius and Lennard
-                                </p>
-                            </div>
-                        </section>
-                    </div>
-
-                    <div class="column is-4 mt-4">
-                        <div class="box">
-                            <div id="chat-messages" style="max-height: 300px; overflow-y: scroll;">{% for m in messages %}<b>{{ m.username }}</b>: {{ m.content }}<br>{% endfor %}</div>
-                        </div>
-                        <div class="field">
-                            <div class="control">
-                                <input class="input" type="text" placeholder="Text message" id="chat-message-input">
-                            </div>
-                        </div>
-
-                        <div class="field">
-                            <div class="control">
-                                <a class="button is-info is-light" id="chat-message-submit">Send</a>
-                            </div>
-                        </div>
-                        <small class="has-text-grey-light">Nickname: {{ username }}</small>
-                    </div>
-                </div>
+        <section class="hero is-small is-info">
+            <div class="hero-body">
+                <p class="title">
+                ChatApp
+                </p>
+                <p class="subtitle">
+                Web and Clound Computing
+                </p>
             </div>
         </section>
+
+        <div class="tile is-ancestor">
+            <div class="tile is-4 is-vertical is-parent">
+              <div class="tile is-child box">
+                <p class="title">Channels</p>
+                <div class="box">
+                    <ul class="is-lower-alpha">
+                        <li>Channel 1</li>
+                        <li>Channel 2</li>
+                        <li>Channel 3</li>
+                        <li>Channel ...</li>
+                    </ul>
+                </div>
+              </div>
+              <div class="tile is-child box">
+                <p class="title">Search messages</p>
+                <div class="box">
+                    <small class="has-text-grey-light">Results will show here</small>
+                </div>
+                <div class="field has-addons">
+                    <p class="control">
+                    <input class="input" type="text" placeholder="Search across all channels" id="">
+                    </p>
+                    <p class="control">
+                    <button class="button" id="">
+                        Search
+                    </button>
+                    </p>
+                    <!-- <small class="has-text-grey-light">{{username}}</small> -->
+                </div>
+              </div>
+            </div>
+            <div class="tile is-parent">
+              <div class="tile is-child box">
+                <p class="title">Chat</p>
+                <div class="box">
+                    <div id="chat-messages" style="height: 300px; overflow-y: scroll;">{% for m in messages %}<b>{{ m.username }}</b>: {{ m.content }}<br>{% endfor %}</div>
+                </div>
+                <div class="field has-addons">
+                    <p class="control">
+                    <input class="input is-focused" type="text" placeholder="Text message" id="chat-message-input">
+                    </p>
+                    <p class="control">
+                    <button class="button" id="chat-message-submit">
+                        Send
+                    </button>
+                    </p>
+                    <!-- <small class="has-text-grey-light">{{username}}</small> -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <footer class="footer">
+            <div class="content has-text-centered">
+              <p>
+                <strong>Chat App</strong> by Marius Captari and Lennard Froma (Group 15)</a>. The source code can be found on
+                <a href="https://github.com/rug-wacc/2022_group_15_s4865928_s2676699">GitHub</a>.
+              </p>
+            </div>
+          </footer>
 
         {{ room_name|json_script:"json-roomname" }}
         {{ username|json_script:"json-username" }}
@@ -54,38 +89,7 @@
                 objDiv.scrollTop = objDiv.scrollHeight;
             }
 
-            scrollToBottom();
-
-            const roomName = JSON.parse(document.getElementById('json-roomname').textContent);
-            const userName = JSON.parse(document.getElementById('json-username').textContent);
-
-            const chatSocket = new WebSocket(
-                'ws://'
-                + window.location.host
-                + '/ws/'
-                + roomName
-                + '/'
-            );
-
-            chatSocket.onmessage = function(e) {
-                console.log('onmessage');
-
-                const data = JSON.parse(e.data);
-
-                if (data.message) {
-                    document.querySelector('#chat-messages').innerHTML += ('<b>' + data.username + '</b>: ' + data.message + '<br>');
-                } else {
-                    alert('The message is empty!');
-                }
-
-                scrollToBottom();
-            };
-
-            chatSocket.onclose = function(e) {
-                console.log('Web socket was closed!');
-            };
-
-            document.querySelector('#chat-message-submit').onclick = function(e) {
+            function messageSubmitHandler() {
                 const messageInputDom = document.querySelector('#chat-message-input');
                 const message = messageInputDom.value;
 
@@ -94,9 +98,42 @@
                     'username': userName,
                     'room': roomName
                 }));
-
+                // Clear the just sent message from input box
                 messageInputDom.value = '';
+            }
+            document.querySelector('#chat-message-input').focus();
+            scrollToBottom();
+
+            const roomName = JSON.parse(document.getElementById('json-roomname').textContent);
+            const userName = JSON.parse(document.getElementById('json-username').textContent);
+
+            let url = `ws://${window.location.host}/ws/${roomName}/`
+            const chatSocket = new WebSocket(url)
+
+            chatSocket.onmessage = function(e) {
+                console.log('Message received from connected web socket!');
+                let data = JSON.parse(e.data);
+                if (data.message) {
+                    document.querySelector('#chat-messages').innerHTML += ('<b>' + data.username + '</b>: ' + data.message + '<br>');
+                }
+                // Automatically push the chat up
+                scrollToBottom();
             };
+
+            chatSocket.onclose = function(e) {
+                console.log('Web socket connection to the server was closed!');
+            };
+
+            // ---------------------
+            const messageInputDom = document.querySelector('#chat-message-input');
+            const messageSubmitDom = document.querySelector('#chat-message-submit');
+
+            messageInputDom.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    messageSubmitHandler();
+                }
+            });
+            messageSubmitDom.addEventListener("click", messageSubmitHandler);
         </script>
     </body>
 </html>

@@ -6,36 +6,42 @@
         <title>ChatApp</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
     </head>
+    <style>
+        html,
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        body > footer {
+            margin-top: auto;
+        }
+    </style>
 
     <body>
-        <section class="section">
-            <div class="container">
-                <div class="columns is-multiline">
-                    <div class="column is-4 is-offset-2">
-                        <section class="hero is-primary is-medium has-background-link">
-                            <div class="hero-body">
-                                <p class="title">
-                                    ChatApp
-                                </p>
-                                <p class="subtitle">
-                                    Made by Marius and Lennard
-                                </p>
-                            </div>
-                        </section>
-                    </div>
+        <section class="hero is-small is-info">
+            <div class="hero-body">
+                <p class="title">
+                ChatApp
+                </p>
+                <p class="subtitle">
+                Web and Clound Computing
+                </p>
+            </div>
+        </section>
 
-                    <div class="column is-4 mt-4">
+            <div class="container is-centered mt-6">
                         <div class="field">
                             <label>Channel name</label>
                             <div class="control">
-                                <input class="input" type="text" placeholder="Room name" id="room-name-input">
+                                <input class="input" type="text" placeholder="Channel name" id="room-name-input">
                             </div>
                         </div>
 
                         <div class="field">
                             <label>Nickname</label>
                             <div class="control">
-                                <input class="input" type="text" placeholder="Username" id="username-input">
+                                <input class="input" type="text" placeholder="Nickname" id="username-input">
                             </div>
                         </div>
 
@@ -45,16 +51,21 @@
                             </div>
                         </div>
                     </div>
-                </div>
+
+        <footer class="footer">
+            <div class="content has-text-centered">
+              <p>
+                <strong>Chat App</strong> by Marius Captari and Lennard Froma (Group 15)</a>. The source code can be found on
+                <a href="https://github.com/rug-wacc/2022_group_15_s4865928_s2676699">GitHub</a>.
+              </p>
             </div>
-        </section>
+          </footer>
 
         <script>
             document.querySelector('#room-name-input').focus();
             document.querySelector('#room-name-submit').onclick = function(e) {
                 var roomName = document.querySelector('#room-name-input').value;
                 var userName = document.querySelector('#username-input').value;
-
                 window.location.replace(roomName + '/?username=' + userName);
             };
         </script>
