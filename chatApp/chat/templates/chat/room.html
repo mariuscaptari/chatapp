@@ -60,7 +60,7 @@
             const userName = JSON.parse(document.getElementById('json-username').textContent);
 
             const chatSocket = new WebSocket(
-                'wss://'
+                'ws://'
                 + window.location.host
                 + '/ws/'
                 + roomName
@@ -82,7 +82,7 @@
             };
 
             chatSocket.onclose = function(e) {
-                console.log('The socket close unexpectadly');
+                console.log('Web socket was closed!');
             };
 
             document.querySelector('#chat-message-submit').onclick = function(e) {
