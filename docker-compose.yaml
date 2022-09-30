@@ -1,0 +1,20 @@
+version: '3'
+name: "chatApp"
+ 
+services:
+  redis:
+    image: redis:6
+    ports:
+      - "6379:6379"
+  web:
+    build: .
+    command: >
+      bash -c " python chatApp/manage.py makemigrations
+      && python chatApp/manage.py migrate
+      && python chatApp/manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/web
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
