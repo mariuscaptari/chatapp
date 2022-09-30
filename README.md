@@ -1,8 +1,9 @@
 # Web and Cloud Computing - Group 15
-## Chat App
+## Chat App - *Marius s4865928* and *Lennard s2676699*
 
-Marius s4865928
-Lennard s2676699
+
+
+![Demo video](demo.gif)
 
 ### How to run
 To start the front-end, back-end and in memory caching services run:
