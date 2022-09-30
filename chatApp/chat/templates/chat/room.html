@@ -1,27 +1,28 @@
 <!DOCTYPE html>
 
 <html>
-    <head>
-        <meta charset="utf-8"/>
-        <title>ChatApp</title>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
-    </head>
 
-    <body>
-        <section class="hero is-small is-info">
-            <div class="hero-body">
-                <p class="title">
-                ChatApp
-                </p>
-                <p class="subtitle">
+<head>
+    <meta charset="utf-8" />
+    <title>ChatApp 🍣</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
+</head>
+
+<body>
+    <section class="hero is-small is-info">
+        <div class="hero-body">
+            <p class="title">
+                ChatApp 🍣
+            </p>
+            <p class="subtitle">
                 Web and Clound Computing
-                </p>
-            </div>
-        </section>
+            </p>
+        </div>
+    </section>
 
-        <div class="tile is-ancestor">
-            <div class="tile is-4 is-vertical is-parent">
-              <div class="tile is-child box">
+    <div class="tile is-ancestor">
+        <div class="tile is-4 is-vertical is-parent">
+            <div class="tile is-child box">
                 <p class="title">Channels</p>
                 <div class="box">
                     <ul class="is-lower-alpha">
@@ -31,109 +32,110 @@
                         <li>Channel ...</li>
                     </ul>
                 </div>
-              </div>
-              <div class="tile is-child box">
+            </div>
+            <div class="tile is-child box">
                 <p class="title">Search messages</p>
                 <div class="box">
                     <small class="has-text-grey-light">Results will show here</small>
                 </div>
                 <div class="field has-addons">
                     <p class="control">
-                    <input class="input" type="text" placeholder="Search across all channels" id="">
+                        <input class="input" type="text" placeholder="Search across all channels" id="">
                     </p>
                     <p class="control">
-                    <button class="button" id="">
-                        Search
-                    </button>
+                        <button class="button" id="">
+                            Search
+                        </button>
                     </p>
                     <!-- <small class="has-text-grey-light">{{username}}</small> -->
                 </div>
-              </div>
             </div>
-            <div class="tile is-parent">
-              <div class="tile is-child box">
+        </div>
+        <div class="tile is-parent">
+            <div class="tile is-child box">
                 <p class="title">Chat</p>
                 <div class="box">
-                    <div id="chat-messages" style="height: 300px; overflow-y: scroll;">{% for m in messages %}<b>{{ m.username }}</b>: {{ m.content }}<br>{% endfor %}</div>
+                    <div id="chat-messages" style="height: 300px; overflow-y: scroll;">{% for m in messages %}<b>{{
+                            m.username }}</b>: {{ m.content }}<br>{% endfor %}</div>
                 </div>
                 <div class="field has-addons">
                     <p class="control">
-                    <input class="input is-focused" type="text" placeholder="Text message" id="chat-message-input">
+                        <input class="input is-focused" type="text" placeholder="Text message" id="chat-message-input">
                     </p>
                     <p class="control">
-                    <button class="button" id="chat-message-submit">
-                        Send
-                    </button>
+                        <button class="button" id="chat-message-submit">
+                            Send
+                        </button>
                     </p>
                     <!-- <small class="has-text-grey-light">{{username}}</small> -->
                 </div>
-              </div>
             </div>
-          </div>
+        </div>
+    </div>
 
-          <footer class="footer">
-            <div class="content has-text-centered">
-              <p>
-                <strong>Chat App</strong> by Marius Captari and Lennard Froma (Group 15)</a>. The source code can be found on
+    <footer class="footer">
+        <div class="content has-text-centered">
+            <p>
+                <strong>Chat App</strong> by Marius Captari and Lennard Froma (Group 15)</a>. The source code can be
+                found on
                 <a href="https://github.com/rug-wacc/2022_group_15_s4865928_s2676699">GitHub</a>.
-              </p>
-            </div>
-          </footer>
+            </p>
+        </div>
+    </footer>
 
-        {{ room_name|json_script:"json-roomname" }}
-        {{ username|json_script:"json-username" }}
+    {{ room_name|json_script:"json-roomname" }}
+    {{ username|json_script:"json-username" }}
 
-        <script>
-            function scrollToBottom() {
-                let objDiv = document.getElementById("chat-messages");
-                objDiv.scrollTop = objDiv.scrollHeight;
-            }
+    <script>
+        function scrollToBottom() {
+            let objDiv = document.getElementById("chat-messages");
+            objDiv.scrollTop = objDiv.scrollHeight;
+        }
 
-            function messageSubmitHandler() {
-                const messageInputDom = document.querySelector('#chat-message-input');
-                const message = messageInputDom.value;
-
-                chatSocket.send(JSON.stringify({
-                    'message': message,
-                    'username': userName,
-                    'room': roomName
-                }));
-                // Clear the just sent message from input box
-                messageInputDom.value = '';
-            }
-            document.querySelector('#chat-message-input').focus();
-            scrollToBottom();
-
-            const roomName = JSON.parse(document.getElementById('json-roomname').textContent);
-            const userName = JSON.parse(document.getElementById('json-username').textContent);
-
-            let url = `ws://${window.location.host}/ws/${roomName}/`
-            const chatSocket = new WebSocket(url)
-
-            chatSocket.onmessage = function(e) {
-                console.log('Message received from connected web socket!');
-                let data = JSON.parse(e.data);
-                if (data.message) {
-                    document.querySelector('#chat-messages').innerHTML += ('<b>' + data.username + '</b>: ' + data.message + '<br>');
-                }
-                // Automatically push the chat up
-                scrollToBottom();
-            };
-
-            chatSocket.onclose = function(e) {
-                console.log('Web socket connection to the server was closed!');
-            };
-
-            // ---------------------
+        function messageSubmitHandler() {
             const messageInputDom = document.querySelector('#chat-message-input');
-            const messageSubmitDom = document.querySelector('#chat-message-submit');
+            const message = messageInputDom.value;
 
-            messageInputDom.addEventListener('keypress', function (e) {
-                if (e.key === 'Enter') {
-                    messageSubmitHandler();
-                }
-            });
-            messageSubmitDom.addEventListener("click", messageSubmitHandler);
-        </script>
-    </body>
+            chatSocket.send(JSON.stringify({
+                'message': message,
+                'username': userName,
+                'room': roomName
+            }));
+            // Clear the just sent message from input box
+            messageInputDom.value = '';
+        }
+        document.querySelector('#chat-message-input').focus();
+        scrollToBottom();
+
+        const roomName = JSON.parse(document.getElementById('json-roomname').textContent);
+        const userName = JSON.parse(document.getElementById('json-username').textContent);
+
+        let url = `ws://${window.location.host}/ws/${roomName}/`
+        const chatSocket = new WebSocket(url)
+
+        chatSocket.onmessage = function (e) {
+            console.log('Message received from connected web socket!');
+            let data = JSON.parse(e.data);
+            if (data.message) {
+                document.querySelector('#chat-messages').innerHTML += ('<b>' + data.username + '</b>: ' + data.message + '<br>');
+            }
+            // Automatically push the chat up
+            scrollToBottom();
+        };
+
+        chatSocket.onclose = function (e) {
+            console.log('Web socket connection to the server was closed!');
+        };
+        const messageInputDom = document.querySelector('#chat-message-input');
+        const messageSubmitDom = document.querySelector('#chat-message-submit');
+
+        messageInputDom.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                messageSubmitHandler();
+            }
+        });
+        messageSubmitDom.addEventListener("click", messageSubmitHandler);
+    </script>
+</body>
+
 </html>

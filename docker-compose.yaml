@@ -1,4 +1,5 @@
 version: '3'
+name: "chatApp"
  
 services:
   redis:
@@ -6,9 +7,11 @@ services:
     ports:
       - "6379:6379"
   web:
-    container_name: chatApp
     build: .
-    command: python chatApp/manage.py runserver 0.0.0.0:8000
+    command: >
+      bash -c " python chatApp/manage.py makemigrations
+      && python chatApp/manage.py migrate
+      && python chatApp/manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/web
     ports:

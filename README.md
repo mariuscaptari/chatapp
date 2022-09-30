@@ -10,4 +10,4 @@ To start the front-end, back-end and in memory caching services run:
 docker compose up -d
 ```
 
-The chatApp should now be accessible at ```http://0.0.0.0:8000/```.
+The chat app should now be accessible at ```http://0.0.0.0:8000/```.
