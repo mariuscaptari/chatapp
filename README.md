@@ -1,1 +1,14 @@
-# 2022_group_15_s4865928_s2676699
+# Web and Cloud Computing - Group 15
+## Chat App - *Marius s4865928* and *Lennard s2676699*
+
+
+
+![Demo video](demo.gif)
+
+### How to run
+To start the front-end, back-end and in memory caching services run:
+```shell
+docker compose up -d
+```
+
+The chat app should now be accessible at ```http://0.0.0.0:8000/```.
