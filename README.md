@@ -23,8 +23,8 @@ python manage.py flush
 
 ## Roadmap
 
-- [ ] Cassandra DB
 - [ ] Search messages feature
+- [ ] Cassandra DB
 - [ ] Predefined dropdown channel selection
 - [ ] Form validation from landing page
 - [ ] Split front-end and back-end into two containers
