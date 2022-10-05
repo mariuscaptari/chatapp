@@ -1,4 +1,3 @@
-from email import message
 from django.shortcuts import render
 
 from .models import Message
@@ -9,5 +8,6 @@ def index(request):
 
 def room(request, room_name):
     username = request.GET.get('username', 'Incognito')
-    messages = Message.objects.filter(room=room_name)#[0:30]
+    # Load only latest 20 messages of the given room
+    messages = Message.objects.filter(room=room_name)[0:20]
     return render(request, 'chat/room.html', {'room_name': room_name, 'username': username, 'messages': messages})
