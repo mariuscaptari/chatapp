@@ -3,20 +3,34 @@ name: "chatApp"
 
 services:
   redis:
-    image: redis:6
+    image: redis:latest
     ports:
       - "6379:6379"
+    networks:
+      - djangonetwork
+  cassandra:
+    image: cassandra:latest
+    ports:
+      - "9042:9042"
+    volumes:
+      - ./cassandra:/var/lib/cassandra
+    networks:
+      - djangonetwork
   web:
     build: .
-    command: >
-      bash -c " python chatApp/manage.py makemigrations
-      && python chatApp/manage.py migrate
-      && python chatApp/manage.py runserver 0.0.0.0:8000"
+    command: bash -c "wait-for-it cassandra:9042 -- python chatApp/manage.py sync_cassandra && python chatApp/manage.py runserver 0.0.0.0:8000"
     volumes:
-      - data:/app
+      - .:/app
     ports:
       - "8000:8000"
     depends_on:
       - redis
-volumes:
-  data:
+      - cassandra
+    links:
+        - cassandra:cassandra
+    networks:
+        - djangonetwork
+
+networks:
+  djangonetwork:
+    driver: bridge

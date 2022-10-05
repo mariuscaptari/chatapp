@@ -8,6 +8,5 @@ def index(request):
 
 def room(request, room_name):
     username = request.GET.get('username', 'Incognito')
-    # Load only latest 20 messages of the given room
-    messages = Message.objects.filter(room=room_name)[0:20]
+    messages = Message.objects.filter(room=room_name)[0:20] # Last 20 messages
     return render(request, 'chat/room.html', {'room_name': room_name, 'username': username, 'messages': messages})

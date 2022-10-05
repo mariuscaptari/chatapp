@@ -21,10 +21,15 @@ To clear all the database entries:
 python manage.py flush
 ```
 
+To update dependencies:
+```shell
+pip list --format=freeze > requirements.txt
+```
+
 ## Roadmap
 
+- [x] Cassandra DB
 - [ ] Search messages feature
-- [ ] Cassandra DB
 - [ ] Predefined dropdown channel selection
 - [ ] Form validation from landing page
 - [ ] Split front-end and back-end into two containers
