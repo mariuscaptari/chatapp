@@ -1,7 +1,9 @@
 import json
+import datetime
 
 from channels.generic.websocket import AsyncWebsocketConsumer
 from asgiref.sync import sync_to_async
+from cassandra.util import uuid_from_time
 
 from .models import Message
 
@@ -57,4 +59,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     @sync_to_async
     def save_message(self, username, room, message):
-        Message.objects.create(username=username, room=room, content=message)
+        time = datetime.datetime.now()
+        time_uuid = uuid_from_time(time)
+        Message.objects.create(username=username, room=room, content=message, date_added=time_uuid)

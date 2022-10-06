@@ -3,20 +3,23 @@ name: "chatApp"
 
 services:
   redis:
+    restart: always
     image: redis:latest
     ports:
       - "6379:6379"
     networks:
       - djangonetwork
   cassandra:
+    restart: always
     image: cassandra:latest
     ports:
       - "9042:9042"
     volumes:
-      - ./data/cassandra:/var/lib/cassandra
+      - data:/var/lib/cassandra
     networks:
       - djangonetwork
   web:
+    restart: always
     build: .
     command: bash -c "wait-for-it cassandra:9042 -- python chatApp/manage.py sync_cassandra && python chatApp/manage.py runserver 0.0.0.0:8000"
     volumes:
@@ -30,6 +33,8 @@ services:
         - cassandra:cassandra
     networks:
         - djangonetwork
+volumes:
+  data:
 
 networks:
   djangonetwork:
