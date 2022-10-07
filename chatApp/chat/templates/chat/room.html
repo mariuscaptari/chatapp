@@ -47,13 +47,12 @@
                             Search
                         </button>
                     </p>
-                    <!-- <small class="has-text-grey-light">{{username}}</small> -->
                 </div>
             </div>
         </div>
         <div class="tile is-parent">
             <div class="tile is-child box">
-                <p class="title">Chat</p>
+                <p class="title">Chat <small class="has-text-grey-light">{{room_name}}</small></p>
                 <div class="box">
                     <div id="chat-messages" style="height: 300px; overflow-y: scroll;">{% for m in messages %}<b>{{ m.username }}</b>: {{ m.content }}<br>{% endfor %}</div>
                 </div>
@@ -63,10 +62,9 @@
                     </p>
                     <p class="control">
                         <button class="button" id="chat-message-submit">
-                            Send
+                            Sends
                         </button>
                     </p>
-                    <!-- <small class="has-text-grey-light">{{username}}</small> -->
                 </div>
             </div>
         </div>
@@ -95,13 +93,14 @@
             const messageInputDom = document.querySelector('#chat-message-input');
             const message = messageInputDom.value;
 
-            chatSocket.send(JSON.stringify({
-                'message': message,
-                'username': userName,
-                'room': roomName
-            }));
-            // Clear the just sent message from input box
-            messageInputDom.value = '';
+            if (message) {
+                chatSocket.send(JSON.stringify({
+                    'message': message,
+                    'username': userName,
+                    'room': roomName
+                }));
+                messageInputDom.value = '';
+            }
         }
         document.querySelector('#chat-message-input').focus();
         scrollToBottom();
@@ -118,7 +117,6 @@
             if (data.message) {
                 document.querySelector('#chat-messages').innerHTML += ('<b>' + data.username + '</b>: ' + data.message + '<br>');
             }
-            // Automatically push the chat up
             scrollToBottom();
         };
 
