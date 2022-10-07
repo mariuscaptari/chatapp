@@ -29,7 +29,7 @@ pip list --format=freeze > requirements.txt
 ## Roadmap
 
 - [x] Cassandra DB
+- [ ] Move front end to React
 - [ ] Search messages feature
 - [ ] Predefined dropdown channel selection
 - [ ] Form validation from landing page
-- [ ] Split front-end and back-end into two containers
