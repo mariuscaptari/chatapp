@@ -312,8 +312,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-/cassandra/*
-
-!/cassandra
-
 # End of https://www.toptal.com/developers/gitignore/api/python,django,macos,windows
