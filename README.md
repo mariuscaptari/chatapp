@@ -1,35 +1,54 @@
-# Web and Cloud Computing - Group 15
-**Chat App** made by Marius and Lennard.
+# chat-app
 
-![Demo video](demo.gif)
+Behold My Awesome Project!
 
-## How to run
-To start the front-end, back-end and in memory caching services run:
-```shell
-docker compose up -d
-```
+[![Built with Cookiecutter Django](https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg?logo=cookiecutter)](https://github.com/cookiecutter/cookiecutter-django/)
+[![Black code style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 
-or to force rebuild the images:
-```shell
-docker compose up --force-recreate --build -d
-```
+License: MIT
 
-The chat app should now be accessible at ```http://0.0.0.0:8000/```.
+## Settings
 
-To clear all the database entries:
-```shell
-python manage.py flush
-```
+Moved to [settings](http://cookiecutter-django.readthedocs.io/en/latest/settings.html).
 
-To update dependencies:
-```shell
-pip list --format=freeze > requirements.txt
-```
+## Basic Commands
 
-## Roadmap
+### Setting Up Your Users
 
-- [x] Cassandra DB
-- [ ] Move front end to React
-- [ ] Search messages feature
-- [ ] Predefined dropdown channel selection
-- [ ] Form validation from landing page
+-   To create a **normal user account**, just go to Sign Up and fill out the form. Once you submit it, you'll see a "Verify Your E-mail Address" page. Go to your console to see a simulated email verification message. Copy the link into your browser. Now the user's email should be verified and ready to go.
+
+-   To create a **superuser account**, use this command:
+
+        $ python manage.py createsuperuser
+
+For convenience, you can keep your normal user logged in on Chrome and your superuser logged in on Firefox (or similar), so that you can see how the site behaves for both kinds of users.
+
+### Type checks
+
+Running type checks with mypy:
+
+    $ mypy chat_app
+
+### Test coverage
+
+To run the tests, check your test coverage, and generate an HTML coverage report:
+
+    $ coverage run -m pytest
+    $ coverage html
+    $ open htmlcov/index.html
+
+#### Running tests with pytest
+
+    $ pytest
+
+### Live reloading and Sass CSS compilation
+
+Moved to [Live reloading and SASS compilation](https://cookiecutter-django.readthedocs.io/en/latest/developing-locally.html#sass-compilation-live-reloading).
+
+## Deployment
+
+The following details how to deploy this application.
+
+### Docker
+
+See detailed [cookiecutter-django Docker documentation](http://cookiecutter-django.readthedocs.io/en/latest/deployment-with-docker.html).
