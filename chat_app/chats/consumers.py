@@ -1,31 +1,46 @@
-from channels.generic.websocket import JsonWebsocketConsumer
+# from channels.generic.websocket import JsonWebsocketConsumer
+from channels.generic.websocket import AsyncJsonWebsocketConsumer
 
 
-class ChatConsumer(JsonWebsocketConsumer):
-    """
-    This consumer is used to show user's online status,
-    and send notifications.
-    """
-
+class ChatConsumer(AsyncJsonWebsocketConsumer):
     def __init__(self, *args, **kwargs):
         super().__init__(args, kwargs)
         self.room_name = None
 
-    def connect(self):
+    async def connect(self):
         print("Connected!")
         self.room_name = "home"
-        self.accept()
-        self.send_json(
+        await self.accept()
+        # acception connection
+        await self.channel_layer.group_add(
+            self.room_name,
+            self.channel_name,
+        )
+        # Send welcome back message to WebSocket
+        await self.send_json(
             {
                 "type": "welcome_message",
                 "message": "Hey there! You've successfully connected!",
             }
         )
 
-    def disconnect(self, code):
+    async def disconnect(self, code):
         print("Disconnected!")
         return super().disconnect(code)
 
-    def receive_json(self, content, **kwargs):
-        print(content)
+    async def receive_json(self, content, **kwargs):
+        message_type = content["type"]
+        if message_type == "chat_message":
+            await self.channel_layer.group_send(
+                self.room_name,
+                {
+                    "type": "chat_message_echo",
+                    "name": content["name"],
+                    "message": content["message"],
+                },
+            )
         return super().receive_json(content, **kwargs)
+
+    async def chat_message_echo(self, event):
+        print(event)
+        await self.send_json(event)
