@@ -5,3 +5,5 @@ IPYTHONDIR=/app/.ipython
 
 REDIS_HOST='redis'
 REDIS_PORT=6379
+
+DATABASE_URL=postgres://postgres:<KhE1jCRKxsomtYPnkp4yMVYRTfSYtGa2ICA0tYwvwXPnTeLzxrTwKhST3P8JZZiU>@127.0.0.1:5432/<chat_app>

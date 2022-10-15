@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
+// import 'bulma/css/bulma.min.css';
 
 export function Chat() {
   const [welcomeMessage, setWelcomeMessage] = useState('')

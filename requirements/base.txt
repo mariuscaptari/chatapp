@@ -19,3 +19,4 @@ djangorestframework==3.14.0
 channels==3.0.5
 channels-redis==3.4.1
 django-cassandra-engine==1.7.0
+django-cors-headers==3.13.0
