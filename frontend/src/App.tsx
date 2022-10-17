@@ -4,7 +4,6 @@ import { Chat } from "./components/Chat";
 import { Login } from "./components/Login";
 import { Navbar } from "./components/Navbar";
 import { AuthContextProvider } from "./contexts/AuthContext";
-
 export default function App() {
   return (
     <BrowserRouter>
