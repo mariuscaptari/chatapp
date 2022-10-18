@@ -1,9 +1,12 @@
 import { setDefaultResultOrder } from 'dns';
 import React, { useState } from 'react';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
+import { useParams } from "react-router-dom";
+
 import 'bulma/css/bulma.min.css';
 
 export function Chat() {
+  const { conversationName } = useParams();
   const [welcomeMessage, setWelcomeMessage] = useState('')
   const [messageHistory, setMessageHistory] = useState<any>([]);
  
@@ -66,15 +69,13 @@ export function Chat() {
   }
   
   const handleSearch = () =>{
-    setSearchResult("Searching...")
+    setSearchResult("Get searched messages from backend!")
   }
-
 
   return (
     <div>
       <head>
         <title>ChatApp 🍣</title>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css"></link>
       </head>
 
       <section className="hero is-small is-info">
@@ -104,17 +105,15 @@ export function Chat() {
             <div className="tile is-child box">
                 <p className="title">Search messages</p>
                 <div className="box">
-                    <small className="has-text-grey-light">Results will show here</small>
+                    <small className="has-text-grey-light"  placeholder="SearchieSearch">{searchResult}</small>
                 </div>
                 <div className="field has-addons">
                     <p className="control">
                     <input
                           name="search"
                           placeholder="Search Messages"
-                          value = {searchResult}
                           className="ml-2 shadow-sm sm:text-sm border-gray-300 bg-gray-100 rounded-md"
                           type="text"
-                          onChange={handleSearchQuery}
                       />
                     </p>
                     <p >
@@ -128,7 +127,8 @@ export function Chat() {
             <div className="tile is-child box">
                 <p className="title">Chat <small className="has-text-grey-light">{"room_name"}</small></p>
                 <div className="box">
-                    <div id="chat-messages" style="height: 300px; overflow-y: scroll;">{% for m in messages %}<b>{{ m.username }}</b>: {{ m.content }}<br>{% endfor %}</div>
+                    {/* <div id="chat-messages" style="height: 300px; overflow-y: scroll;">{% for m in messages %}<b>{{ m.username }}</b>: {{ m.content }}<br>{% endfor %}</div> */}
+                    <p>"Retrieve messages from backend"</p>
                 </div>
                 <div className="field has-addons">
                 <input 
@@ -159,9 +159,9 @@ export function Chat() {
       <div> 
         <footer>
               <p>
-                  <strong>Chat App</strong> by Marius Captari and Lennard Froma (Group 15). The source code can be
-                  found on
-                  <a href="https://github.com/rug-wacc/2022_group_15_s4865928_s2676699">GitHub</a>.
+                <strong>Chat App</strong> by Marius Captari and Lennard Froma (Group 15). The source code can be
+                found on
+                <a href="https://github.com/rug-wacc/2022_group_15_s4865928_s2676699">GitHub</a>.
               </p>
         </footer>
       </div>
