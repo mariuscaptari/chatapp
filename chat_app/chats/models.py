@@ -1,14 +1,16 @@
 import uuid
 
-from django.db import models
+from cassandra.cqlengine import columns
+from django_cassandra_engine.models import DjangoCassandraModel
 
 
-class Message(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
-    name = models.CharField(max_length=255)
-    room = models.CharField(max_length=255)
-    content = models.TextField()
-    date_added = models.DateTimeField(auto_now_add=True)
+class Message(DjangoCassandraModel):
+    id = columns.UUID(default=uuid.uuid4)
+    name = columns.Text(required=True)
+    room = columns.Text(primary_key=True, partition_key=True)
+    content = columns.Text(required=True)
+    date_added = columns.DateTime(primary_key=True, clustering_order="DESC")
 
     class Meta:
-        ordering = ("date_added",)
+        ordering = ("-date_added",)
+        get_pk_field = "room"

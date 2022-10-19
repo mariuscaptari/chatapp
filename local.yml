@@ -1,16 +1,25 @@
 version: '3'
 
 volumes:
-  chat_app_local_postgres_data: {}
-  chat_app_local_postgres_data_backups: {}
+  chat_app_local_cassandra_data: {}
 
 services:
   redis:
+    restart: always
     image: redis:6
     container_name: chat_app_local_redis
     ports:
       - "6379:6379"
+  cassandra:
+    restart: always
+    image: cassandra:4.1
+    container_name: chat_app_local_cassandra
+    ports:
+      - "9042:9042"
+    volumes:
+      - chat_app_local_cassandra_data:/var/lib/cassandra:Z
   django:
+    restart: always
     build:
       context: .
       dockerfile: ./compose/local/django/Dockerfile
@@ -18,7 +27,7 @@ services:
     container_name: chat_app_local_django
     platform: linux/x86_64
     depends_on:
-      - postgres
+      - cassandra
       - redis
     volumes:
       - .:/app:z
@@ -29,31 +38,7 @@ services:
       - "8000:8000"
     command: /start
 
-  postgres:
-    build:
-      context: .
-      dockerfile: ./compose/production/postgres/Dockerfile
-    image: chat_app_production_postgres
-    container_name: chat_app_local_postgres
-    volumes:
-      - chat_app_local_postgres_data:/var/lib/postgresql/data:Z
-      - chat_app_local_postgres_data_backups:/backups:z
-    env_file:
-      - ./.envs/.local/.postgres
-
-  # docs:
-  #   image: chat_app_local_docs
-  #   container_name: chat_app_local_docs
-  #   platform: linux/x86_64
-  #   build:
-  #     context: .
-  #     dockerfile: ./compose/local/docs/Dockerfile
-  #   env_file:
-  #     - ./.envs/.local/.django
-  #   volumes:
-  #     - ./docs:/docs:z
-  #     - ./config:/app/config:z
-  #     - ./chat_app:/app/chat_app:z
-  #   ports:
-  #     - "9000:9000"
-  #   command: /start-docs
+networks:
+  default:
+    name: default_network
+    driver: bridge

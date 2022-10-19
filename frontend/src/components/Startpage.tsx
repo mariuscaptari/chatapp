@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { useNavigate } from "react-router-dom";
 import 'bulma/css/bulma.min.css';
@@ -24,7 +24,7 @@ export function Startpage(){
             <section className="hero is-small is-info">
                 <div className="hero-body">
                     <p className="title">
-                        ChatApp 🍣
+                        ChatApp 🎃
                     </p>
                     <p className="subtitle">
                         Web and Cloud Computing

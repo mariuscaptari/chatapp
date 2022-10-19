@@ -1,4 +1,5 @@
 # from channels.generic.websocket import JsonWebsocketConsumer
+import datetime
 import json
 from uuid import UUID
 
@@ -75,7 +76,10 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
 
     @sync_to_async
     def save_message(self, name, room, message):
-        return Message.objects.create(name=name, room=room, content=message)
+        timestamp = datetime.datetime.now()
+        return Message.objects.create(
+            name=name, room=room, content=message, date_added=timestamp
+        )
 
     @sync_to_async
     def get_last_messages(self, room):
