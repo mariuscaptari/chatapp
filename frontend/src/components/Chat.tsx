@@ -1,20 +1,22 @@
 import { setDefaultResultOrder } from 'dns';
 import React, { useState } from 'react';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import 'bulma/css/bulma.min.css';
 
 export function Chat() {
-  const { conversationName } = useParams();
   const [welcomeMessage, setWelcomeMessage] = useState('')
   const [messageHistory, setMessageHistory] = useState<any>([]);
- 
   const [message, setMessage] = useState("")
-  const [name, setName] = useState("")
   const [searchResult, setSearchResult] = useState("")
 
-  const { readyState, sendJsonMessage } = useWebSocket('ws://127.0.0.1:8000/', {
+  const { room, name } = useParams();
+
+  const navigate = useNavigate();
+  const handleGoHome = () => navigate("/");
+
+  const { readyState, sendJsonMessage } = useWebSocket("ws://127.0.0.1:8000/ws/" + room + "/", {
     onOpen: () => {
       console.log("Connected!")
     },
@@ -23,6 +25,7 @@ export function Chat() {
     },
     // onMessage handler 
     onMessage: (e) => {
+      console.log(e)
       const data = JSON.parse(e.data)
       switch (data.type) {
         case 'welcome_message':
@@ -50,34 +53,36 @@ export function Chat() {
     setMessage(e.target.value)
   }
 
-  function handleChangeName(e: any) {
-    setName(e.target.value)
-  }
+  // function handleChangeName(e: any) {
+  //   setName(e.target.value)
+  // }
 
   function handleSearchQuery(e: any){
     setSearchResult(e.target.value)
   }
+    const handleKeypress = (e: { keyCode: number; }) => {
+    if (e.keyCode === 13) {
+      handleSubmit();
+    }
+  };
 
-  const handleSubmit = () => {
-    sendJsonMessage({
-      type: "chat_message",
-      message,
-      name
-    })
-    setName("")
-    setMessage("")
+  function handleSubmit() {
+    if (message){
+      sendJsonMessage({
+        type: "chat_message",
+        message,
+        name
+      });
+      setMessage("");
+    }
   }
-  
+
   const handleSearch = () =>{
     setSearchResult("Get searched messages from backend!")
   }
 
   return (
     <div>
-      <head>
-        <title>ChatApp 🍣</title>
-      </head>
-
       <section className="hero is-small is-info">
         <div className="hero-body">
             <p className="title">
@@ -116,7 +121,7 @@ export function Chat() {
                           type="text"
                       />
                     </p>
-                    <p >
+                    <p>
                         <button 
                         className='ml-3 bg-gray-300 px-3 py-1' onClick={handleSearch}>Search Messages!</button>
                     </p>
@@ -125,43 +130,34 @@ export function Chat() {
         </div>
         <div className="tile is-parent">
             <div className="tile is-child box">
-                <p className="title">Chat <small className="has-text-grey-light">{"room_name"}</small></p>
-                <div className="box">
-                    {/* <div id="chat-messages" style="height: 300px; overflow-y: scroll;">{% for m in messages %}<b>{{ m.username }}</b>: {{ m.content }}<br>{% endfor %}</div> */}
-                    <p>"Retrieve messages from backend"</p>
-                </div>
+                <p className="title"> <small className="has-text-grey-light">Chating as</small> {name} <small className="has-text-grey-light"> in </small>{room}</p>
+                <span className="is-size-7 has-text-grey-light">The WebSocket connection is currently: {connectionStatus}</span>
+                <div style={{overflowY : 'scroll',height: '300px'}} className="box">
+                        {messageHistory.map((message: any, idx: number) => (
+                          <div key={idx}>
+                            <b>{message.name}</b>: {message.message}
+                          </div>
+                        ))}
+                </div>                
                 <div className="field has-addons">
-                <input 
+                <input
+                  autoFocus
                   name="message" 
-                  placeholder='Message'
+                  placeholder='Text message'
                   onChange={handleChangeMessage}
+                  onKeyDown={handleKeypress}
                   value={message}
-                  className="ml-2 shadow-sm sm:text-sm border-gray-300 bg-gray-100 rounded-md"/>
-                  <button className='ml-3 bg-gray-300 px-3 py-1' onClick={handleSubmit}  >Submit</button>   
+                  className="input is-focused"/>
+                  <button className='button' onClick={handleSubmit}>Send</button>   
                 </div>
             </div>
         </div>
     </div>
-
-
-      
-      {/* <div >
-          <div >
-            <input 
-              name="name" 
-              placeholder='Name'
-              onChange={handleChangeName}
-              value={name}
-              className="shadow-sm sm:text-sm border-gray-300 bg-gray-100 rounded-md"/>
-            
-          </div>
-      </div> */}
       <div> 
         <footer>
               <p>
                 <strong>Chat App</strong> by Marius Captari and Lennard Froma (Group 15). The source code can be
-                found on
-                <a href="https://github.com/rug-wacc/2022_group_15_s4865928_s2676699">GitHub</a>.
+                found on <a href="https://github.com/rug-wacc/2022_group_15_s4865928_s2676699">GitHub</a>.
               </p>
         </footer>
       </div>
