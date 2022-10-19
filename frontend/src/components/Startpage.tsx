@@ -8,8 +8,8 @@ export function Startpage(){
     const [name, setName] = useState("")
 
     let navigate = useNavigate();
-    const routeChange = () =>{ 
-      let path = room + '/' + name; 
+    const routeChange = () =>{
+      let path = room + '/' + name;
       navigate(path);
     }
     function handleChangeName(e: any) {
@@ -18,7 +18,7 @@ export function Startpage(){
     function handleChangeRoom(e: any) {
         setRoom(e.target.value)
     }
-    
+
     return (
         <div>
             <section className="hero is-small is-info">
@@ -36,11 +36,11 @@ export function Startpage(){
                 <div className="field">
                     <label className="label">Room name</label>
                     <div className="control">
-                        <input 
+                        <input
                             autoFocus
-                            className="input" 
-                            type="text" 
-                            placeholder="Room name" 
+                            className="input"
+                            type="text"
+                            placeholder="Room name"
                             onChange={handleChangeRoom}
                             required
                         />
@@ -50,10 +50,10 @@ export function Startpage(){
                 <div className="field">
                     <label className="label">Nickname</label>
                     <div className="control">
-                        <input 
-                        className="input" 
-                        type="text" 
-                        placeholder="Name" 
+                        <input
+                        className="input"
+                        type="text"
+                        placeholder="Name"
                         onChange={handleChangeName}
                         required
                         />
@@ -76,5 +76,5 @@ export function Startpage(){
             </footer>
             </div>
         </div>
-    )    
+    )
 };

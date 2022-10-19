@@ -11,11 +11,7 @@ from django.urls import reverse
 from chat_app.users.forms import UserAdminChangeForm
 from chat_app.users.models import User
 from chat_app.users.tests.factories import UserFactory
-from chat_app.users.views import (
-    UserRedirectView,
-    UserUpdateView,
-    user_detail_view,
-)
+from chat_app.users.views import UserRedirectView, UserUpdateView, user_detail_view
 
 pytestmark = pytest.mark.django_db
 
