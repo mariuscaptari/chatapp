@@ -41,20 +41,20 @@ services:
     env_file:
       - ./.envs/.local/.postgres
 
-  docs:
-    image: chat_app_local_docs
-    container_name: chat_app_local_docs
-    platform: linux/x86_64
-    build:
-      context: .
-      dockerfile: ./compose/local/docs/Dockerfile
-    env_file:
-      - ./.envs/.local/.django
-    volumes:
-      - ./docs:/docs:z
-      - ./config:/app/config:z
-      - ./chat_app:/app/chat_app:z
-    ports:
-      - "9000:9000"
-    command: /start-docs
+  # docs:
+  #   image: chat_app_local_docs
+  #   container_name: chat_app_local_docs
+  #   platform: linux/x86_64
+  #   build:
+  #     context: .
+  #     dockerfile: ./compose/local/docs/Dockerfile
+  #   env_file:
+  #     - ./.envs/.local/.django
+  #   volumes:
+  #     - ./docs:/docs:z
+  #     - ./config:/app/config:z
+  #     - ./chat_app:/app/chat_app:z
+  #   ports:
+  #     - "9000:9000"
+  #   command: /start-docs
 

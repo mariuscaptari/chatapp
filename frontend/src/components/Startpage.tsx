@@ -7,7 +7,7 @@ export function Startpage(){
     const [room, setRoom] = useState("")
     const [name, setName] = useState("")
 
-    let navigate = useNavigate(); 
+    let navigate = useNavigate();
     const routeChange = () =>{ 
       let path = room + '/' + name; 
       navigate(path);
@@ -19,7 +19,7 @@ export function Startpage(){
         setRoom(e.target.value)
     }
     
-    return (       
+    return (
         <div>
             <section className="hero is-small is-info">
                 <div className="hero-body">
