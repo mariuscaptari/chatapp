@@ -32,7 +32,7 @@ export function Startpage(this: any){
             errors = errors + "\n" + "Only letters";
             }
         };
-        
+
         if (formIsValid) {
             routeChange()
             } else {
@@ -41,14 +41,14 @@ export function Startpage(this: any){
     }
     function handleChangeRoom(e: any) {
         setRoom(e.target.value)
-    }   
+    }
 
-    return (       
+    return (
         <div>
             <section className="hero is-small is-info">
                 <div className="hero-body">
                     <p className="title">
-                        ChatApp ðŸŽƒ
+                        ChatApp 🎃
                     </p>
                     <p className="subtitle">
                         Web and Cloud Computing
@@ -74,10 +74,10 @@ export function Startpage(this: any){
                 <div className="field">
                     <label className="label">Nickname</label>
                     <div className="control">
-                        <input 
-                        className="input" 
-                        type="text" 
-                        placeholder="Name" 
+                        <input
+                        className="input"
+                        type="text"
+                        placeholder="Name"
                         onChange={changeName}
                         required
                         />

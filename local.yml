@@ -42,19 +42,18 @@ services:
   frontend:
     restart: always
     command : npm start
-    container_name: front
+    container_name: chat_app_local_frontend
     build:
-      context: ./frontend/
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: ./compose/local/frontend/Dockerfile
     ports:
       - "3000:3000"
     stdin_open: true
     depends_on:
       - django
-    networks:
-       - app-net
     volumes:
       - ./frontend:/app/frontend
+
 networks:
   default:
     name: default_network
