@@ -39,6 +39,22 @@ services:
       - "8000:8000"
     command: /start
 
+  frontend:
+    restart: always
+    command : npm start
+    container_name: front
+    build:
+      context: ./frontend/
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    depends_on:
+      - django
+    networks:
+       - app-net
+    volumes:
+      - ./frontend:/app/frontend
 networks:
   default:
     name: default_network
