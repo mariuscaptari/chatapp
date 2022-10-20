@@ -33,10 +33,10 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
         self.room_name = self.scope["url_route"]["kwargs"]["room"]
         # self.room_group_name = "chat_%s" % self.room_name
         await self.channel_layer.group_add(
-            self.room_group_name,
+            self.room_name,
             self.channel_name,
         )
-        print("Channel added to group: " + self.room_group_name)
+        print("Added to group: " + self.room_name)
         await self.accept()
         print("Acepted!")
         print("Retriving message history...")
@@ -51,7 +51,7 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
 
     async def disconnect(self, code):
         print("Disconnected!")
-        await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
+        await self.channel_layer.group_discard(self.room_name, self.channel_name)
         return super().disconnect(code)
 
     async def receive_json(self, content, **kwargs):
@@ -64,7 +64,7 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
             print("Received message: ")
             print(serialized_message)
             await self.channel_layer.group_send(
-                self.room_group_name,
+                self.room_name,
                 {
                     "type": "chat_message_echo",
                     "name": content["name"],
