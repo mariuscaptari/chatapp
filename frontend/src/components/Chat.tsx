@@ -9,9 +9,9 @@ import 'bulma/css/bulma.min.css';
 
 export function Chat() {
   const [messageHistory, setMessageHistory] = useState<any>([]);
+  const [searchResult, setSearchResult] = useState<any>([]);
   const [message, setMessage] = useState("");
   const [searchMessage, setSearchMessage] = useState("");
-  const [searchResult, setSearchResult] = useState<any>([]);
 
   const { room, name } = useParams();
 
@@ -34,7 +34,9 @@ export function Chat() {
           setMessageHistory(data.messages);
           break;
         case "search_results":
+          console.log("Received search results!")
           setSearchResult(data.messages);
+          console.log(searchResult)
           break;
         default:
           console.error('Unknown message type!');
@@ -83,13 +85,16 @@ export function Chat() {
   };
 
   const handleSearch = () => {
-    setSearchResult("Get searched messages from backend!")
+    console.log("before send json");
+    // setSearchResult("Get searched messages from backend!");
     if (searchMessage.length === 0) return;
     if (searchMessage.length > 64) return;
+    console.log(searchMessage)
     sendJsonMessage({
       type: "search_messages",
-      searchMessage,
+      searchMessage: searchMessage,
     });
+    console.log("after send json")
     setSearchMessage("");
   }
 
@@ -110,25 +115,20 @@ export function Chat() {
         <div className="tile is-4 is-vertical is-parent">
           <div className="tile is-child box">
             <p className="title">Rooms</p>
-            <div className="box">
               <ul className="is-lower-alpha">
                 <li>Channel 1</li>
                 <li>Channel 2</li>
                 <li>Channel 3</li>
                 <li>Channel ...</li>
               </ul>
-            </div>
           </div>
           <div className="tile is-child box">
             <p className="title">Search messages</p>
-            <div className="box">
-            <div style={{ overflowY: 'scroll', height: '150px' }} className="box">
-              {searchResult.map((message: MessageModel) => (
-                <Message key={message.id} message={message} />
-              ))}
-            </div>
-              {/* <small className="has-text-grey-light" placeholder="SearchieSearch">{searchResult}</small> */}
-            </div>
+              <div style={{ overflowY: 'scroll', height: '200px' }}>
+                {searchResult.map((message: MessageModel) => (
+                  <Message key={message.id} message={message} />
+                ))}
+              </div>
             <div className="field has-addons">
               <p className="control">
                 <input
@@ -151,8 +151,8 @@ export function Chat() {
         <div className="tile is-parent">
           <div className="tile is-child box">
             <p className="title"> <small className="has-text-grey-light">Chating as</small> {name} <small className="has-text-grey-light"> in </small>{room}</p>
-            <span className="is-size-7 has-text-grey-light">The connection is currently: {connectionStatus}</span>
-            <div style={{ overflowY: 'scroll', height: '300px' }} className="box">
+            <span className="pb-2 has-text-grey-light">The connection is currently: {connectionStatus}</span>
+            <div style={{ overflowY: 'scroll', height: '450px' }} className="box">
               {messageHistory.map((message: MessageModel) => (
                 <Message key={message.id} message={message} />
               ))}
@@ -172,12 +172,12 @@ export function Chat() {
         </div>
       </div>
       <div>
-        <footer>
+        {/* <footer>
           <p>
             <strong>Chat App</strong> by Marius Captari and Lennard Froma (Group 15). The source code can be
             found on <a href="https://github.com/rug-wacc/2022_group_15_s4865928_s2676699">GitHub</a>.
           </p>
-        </footer>
+        </footer> */}
       </div>
     </div>
   )

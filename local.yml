@@ -18,6 +18,7 @@ services:
       - "9042:9042"
     volumes:
       - chat_app_local_cassandra_data:/var/lib/cassandra:Z
+      - ./cassandra.yaml:/etc/cassandra/cassandra.yaml:z
   django:
     restart: always
     build:

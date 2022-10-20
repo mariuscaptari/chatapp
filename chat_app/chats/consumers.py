@@ -4,6 +4,7 @@ import json
 from uuid import UUID
 
 from asgiref.sync import sync_to_async
+from cassandra.util import uuid_from_time
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 
 from chat_app.chats.api.serializers import MessageSerializer
@@ -30,13 +31,15 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
 
     async def connect(self):
         self.room_name = self.scope["url_route"]["kwargs"]["room"]
-        print("Connected! Will now be added to group: " + self.room_name)
-        self.room_group_name = "chat_%s" % self.room_name
+        # self.room_group_name = "chat_%s" % self.room_name
         await self.channel_layer.group_add(
             self.room_group_name,
             self.channel_name,
         )
+        print("Channel added to group: " + self.room_group_name)
         await self.accept()
+        print("Acepted!")
+        print("Retriving message history...")
         messages = await self.get_last_messages(room=self.room_name)
         serialized_messages = await self.serialize_messages(messages)
         await self.send_json(
@@ -58,6 +61,7 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
                 name=content["name"], room=self.room_name, message=content["message"]
             )
             serialized_message = await self.serialize_one_message(message)
+            print("Received message: ")
             print(serialized_message)
             await self.channel_layer.group_send(
                 self.room_group_name,
@@ -68,10 +72,12 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
                 },
             )
         if message_type == "search_messages":
+            print("Received search message request")
             messages = await self.get_substring_messages(
                 substring=content["searchMessage"]
             )
             serialized_messages = await self.serialize_messages(messages)
+            print("Query result: ", serialized_messages)
             await self.send_json(
                 {
                     "type": "search_results",
@@ -87,19 +93,23 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
     @sync_to_async
     def save_message(self, name, room, message):
         timestamp = datetime.datetime.now()
+        time_uuid = uuid_from_time(timestamp)
         return Message.objects.create(
-            name=name, room=room, content=message, date_added=timestamp
+            id=time_uuid, name=name, room=room, content=message, date_added=timestamp
         )
 
     @sync_to_async
     def get_last_messages(self, room):
-        messages = Message.objects.filter(room=room)  # .order_by("-date_added")
-        return messages[0:10]
+        messages = Message.objects.filter(room=room)
+        return list(reversed(messages[0:10]))
 
     @sync_to_async
     def get_substring_messages(self, substring):
-        messages = Message.objects.filter(content__contains=substring)
-        return messages
+        like_substring = f"%{substring}%"
+        q = Message.objects.filter(room=self.room_name)
+        q = q.filter(content__like=like_substring).allow_filtering()
+        # print(q)
+        return q[0:10]
 
     @sync_to_async
     def serialize_messages(self, messages):
