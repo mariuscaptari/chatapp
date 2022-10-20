@@ -57,7 +57,6 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
             message = await self.save_message(
                 name=content["name"], room=self.room_name, message=content["message"]
             )
-
             serialized_message = await self.serialize_one_message(message)
             print(serialized_message)
             await self.channel_layer.group_send(
@@ -67,6 +66,17 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
                     "name": content["name"],
                     "message": serialized_message,
                 },
+            )
+        if message_type == "search_messages":
+            messages = await self.get_substring_messages(
+                substring=content["searchMessage"]
+            )
+            serialized_messages = await self.serialize_messages(messages)
+            await self.send_json(
+                {
+                    "type": "search_results",
+                    "messages": serialized_messages,
+                }
             )
         return await super().receive_json(content, **kwargs)
 
@@ -85,6 +95,11 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
     def get_last_messages(self, room):
         messages = Message.objects.filter(room=room)  # .order_by("-date_added")
         return messages[0:10]
+
+    @sync_to_async
+    def get_substring_messages(self, substring):
+        messages = Message.objects.filter(content__contains=substring)
+        return messages
 
     @sync_to_async
     def serialize_messages(self, messages):

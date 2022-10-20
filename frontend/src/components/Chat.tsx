@@ -9,8 +9,9 @@ import 'bulma/css/bulma.min.css';
 
 export function Chat() {
   const [messageHistory, setMessageHistory] = useState<any>([]);
-  const [message, setMessage] = useState("")
-  const [searchResult, setSearchResult] = useState("")
+  const [message, setMessage] = useState("");
+  const [searchMessage, setSearchMessage] = useState("");
+  const [searchResult, setSearchResult] = useState<any>([]);
 
   const { room, name } = useParams();
 
@@ -32,6 +33,9 @@ export function Chat() {
         case "message_history":
           setMessageHistory(data.messages);
           break;
+        case "search_results":
+          setSearchResult(data.messages);
+          break;
         default:
           console.error('Unknown message type!');
           break;
@@ -51,10 +55,11 @@ export function Chat() {
     setMessage(e.target.value)
   }
 
-  // function handleSearchQuery(e: any) {
-  //   setSearchResult(e.target.value)
-  // }
-  const handleKeypress = (e: { keyCode: number; }) => {
+  function handleChangesearchMessage(e: any) {
+    setSearchMessage(e.target.value)
+  }
+
+  const handleKeypressSubmit = (e: { keyCode: number; }) => {
     if (e.keyCode === 13) {
       handleSubmit();
     }
@@ -71,8 +76,21 @@ export function Chat() {
     setMessage("");
   }
 
+  const handleKeypressSearch = (e: { keyCode: number; }) => {
+    if (e.keyCode === 13) {
+      handleSearch();
+    }
+  };
+
   const handleSearch = () => {
     setSearchResult("Get searched messages from backend!")
+    if (searchMessage.length === 0) return;
+    if (searchMessage.length > 64) return;
+    sendJsonMessage({
+      type: "search_messages",
+      searchMessage,
+    });
+    setSearchMessage("");
   }
 
   return (
@@ -91,7 +109,7 @@ export function Chat() {
       <div className="tile is-ancestor">
         <div className="tile is-4 is-vertical is-parent">
           <div className="tile is-child box">
-            <p className="title">Channels</p>
+            <p className="title">Rooms</p>
             <div className="box">
               <ul className="is-lower-alpha">
                 <li>Channel 1</li>
@@ -104,20 +122,28 @@ export function Chat() {
           <div className="tile is-child box">
             <p className="title">Search messages</p>
             <div className="box">
-              <small className="has-text-grey-light" placeholder="SearchieSearch">{searchResult}</small>
+            <div style={{ overflowY: 'scroll', height: '150px' }} className="box">
+              {searchResult.map((message: MessageModel) => (
+                <Message key={message.id} message={message} />
+              ))}
+            </div>
+              {/* <small className="has-text-grey-light" placeholder="SearchieSearch">{searchResult}</small> */}
             </div>
             <div className="field has-addons">
               <p className="control">
                 <input
                   name="search"
                   placeholder="Search Messages"
-                  className="ml-2 shadow-sm sm:text-sm border-gray-300 bg-gray-100 rounded-md"
+                  className="input"
                   type="text"
+                  onChange={handleChangesearchMessage}
+                  onKeyDown={handleKeypressSearch}
+                  value={searchMessage}
                 />
               </p>
               <p>
                 <button
-                  className='ml-3 bg-gray-300 px-3 py-1' onClick={handleSearch}>Search Messages!</button>
+                  className='button' onClick={handleSearch}>Search</button>
               </p>
             </div>
           </div>
@@ -125,7 +151,7 @@ export function Chat() {
         <div className="tile is-parent">
           <div className="tile is-child box">
             <p className="title"> <small className="has-text-grey-light">Chating as</small> {name} <small className="has-text-grey-light"> in </small>{room}</p>
-            <span className="is-size-7 has-text-grey-light">The WebSocket connection is currently: {connectionStatus}</span>
+            <span className="is-size-7 has-text-grey-light">The connection is currently: {connectionStatus}</span>
             <div style={{ overflowY: 'scroll', height: '300px' }} className="box">
               {messageHistory.map((message: MessageModel) => (
                 <Message key={message.id} message={message} />
@@ -137,7 +163,7 @@ export function Chat() {
                 name="message"
                 placeholder='Text message'
                 onChange={handleChangeMessage}
-                onKeyDown={handleKeypress}
+                onKeyDown={handleKeypressSubmit}
                 value={message}
                 className="input is-focused" />
               <button className='button' onClick={handleSubmit}>Send</button>
