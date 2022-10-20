@@ -1,4 +1,5 @@
 // import { setDefaultResultOrder } from 'dns';
+import React from 'react';
 import { useState } from 'react';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
 import { useParams } from "react-router-dom";
@@ -150,7 +151,7 @@ export function Chat() {
         </div>
         <div className="tile is-parent">
           <div className="tile is-child box">
-            <p className="title"> <small className="has-text-grey-light">Chating as</small> {name} <small className="has-text-grey-light"> in </small>{room}</p>
+            <p className="title"> <small className="has-text-grey-light">Chatting as</small> {name} <small className="has-text-grey-light"> in </small>{room}</p>
             <span className="is-size-7 has-text-grey-light">The connection is currently: {connectionStatus}</span>
             <div style={{ overflowY: 'scroll', height: '300px' }} className="box">
               {messageHistory.map((message: MessageModel) => (

@@ -1,9 +1,9 @@
+import React from 'react';
 import { useState } from 'react';
-
 import { useNavigate } from "react-router-dom";
 import 'bulma/css/bulma.min.css';
 
-export function Startpage(){
+export function Startpage(this: any){
     const [room, setRoom] = useState("")
     const [name, setName] = useState("")
 
@@ -12,19 +12,43 @@ export function Startpage(){
       let path = room + '/' + name;
       navigate(path);
     }
+    function changeName(e: any){
+        setName(e.target.value)
+    }
     function handleChangeName(e: any) {
         setName(e.target.value)
+        let errors = "";
+        let formIsValid = true;
+
+        //Name
+        if (!name) {
+            formIsValid = false;
+            errors = errors + "\n" +  "Cannot be empty";
+        }
+
+        if (typeof name !== "undefined") {
+            if (name.match(/[^A-Za-z0-9]/)) {
+            formIsValid = false;
+            errors = errors + "\n" + "Only letters";
+            }
+        };
+        
+        if (formIsValid) {
+            routeChange()
+            } else {
+            alert("Choose valid username, letters only");
+        }
     }
     function handleChangeRoom(e: any) {
         setRoom(e.target.value)
-    }
+    }   
 
-    return (
+    return (       
         <div>
             <section className="hero is-small is-info">
                 <div className="hero-body">
                     <p className="title">
-                        ChatApp 🎃
+                        ChatApp ðŸŽƒ
                     </p>
                     <p className="subtitle">
                         Web and Cloud Computing
@@ -50,11 +74,11 @@ export function Startpage(){
                 <div className="field">
                     <label className="label">Nickname</label>
                     <div className="control">
-                        <input
-                        className="input"
-                        type="text"
-                        placeholder="Name"
-                        onChange={handleChangeName}
+                        <input 
+                        className="input" 
+                        type="text" 
+                        placeholder="Name" 
+                        onChange={changeName}
                         required
                         />
                     </div>
@@ -62,7 +86,7 @@ export function Startpage(){
 
                 <div className="field">
                     <div className="control">
-                        <a className="button is-info" onClick={routeChange}>Connect</a>
+                        <a className="button is-info" onClick={handleChangeName}>Connect</a>
                     </div>
                 </div>
             </div>
