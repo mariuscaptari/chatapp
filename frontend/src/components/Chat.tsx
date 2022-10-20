@@ -114,7 +114,7 @@ export function Chat() {
       <div className="tile is-ancestor">
         <div className="tile is-4 is-vertical is-parent">
           <div className="tile is-child box">
-            <p className="title">Rooms</p>
+            <p className="title is-4">Rooms</p>
               <ul className="is-lower-alpha">
                 <li>Channel 1</li>
                 <li>Channel 2</li>
@@ -123,7 +123,7 @@ export function Chat() {
               </ul>
           </div>
           <div className="tile is-child box">
-            <p className="title">Search messages</p>
+            <p className="title is-4">Search messages</p>
               <div style={{ overflowY: 'scroll', height: '200px' }}>
                 {searchResult.map((message: MessageModel) => (
                   <Message key={message.id} message={message} />
@@ -133,7 +133,7 @@ export function Chat() {
               <p className="control">
                 <input
                   name="search"
-                  placeholder="Search Messages"
+                  placeholder="Text to match"
                   className="input"
                   type="text"
                   onChange={handleChangesearchMessage}
