@@ -26,7 +26,6 @@ services:
       dockerfile: ./compose/local/django/Dockerfile
     image: chat_app_local_django
     container_name: chat_app_local_django
-    platform: linux/x86_64
     depends_on:
       - cassandra
       - redis
@@ -46,6 +45,7 @@ services:
     build:
       context: .
       dockerfile: ./compose/local/frontend/Dockerfile
+    image: chat_app_local_frontend
     ports:
       - "3000:3000"
     stdin_open: true

@@ -6,4 +6,5 @@ set -o nounset
 
 
 python manage.py sync_cassandra
+python create_custom_idx.py
 uvicorn config.asgi:application --host 0.0.0.0 --reload --reload-include '*.html'
