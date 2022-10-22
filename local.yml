@@ -24,7 +24,7 @@ services:
     build:
       context: .
       dockerfile: ./compose/local/django/Dockerfile
-    image: chat_app_local_django
+    image: mariuscaptari/django
     container_name: chat_app_local_django
     depends_on:
       - cassandra
@@ -41,11 +41,11 @@ services:
   frontend:
     restart: always
     command : npm start
+    image: mariuscaptari/frontend
     container_name: chat_app_local_frontend
     build:
       context: .
       dockerfile: ./compose/local/frontend/Dockerfile
-    image: chat_app_local_frontend
     ports:
       - "3000:3000"
     stdin_open: true
