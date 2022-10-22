@@ -18,7 +18,7 @@ services:
       - "9042:9042"
     volumes:
       - chat_app_local_cassandra_data:/var/lib/cassandra:Z
-      - ./cassandra.yaml:/etc/cassandra/cassandra.yaml:z
+      - ./cassandra_config/cassandra.yaml:/etc/cassandra/cassandra.yaml:z
   django:
     restart: always
     build:
@@ -37,7 +37,6 @@ services:
     ports:
       - "8000:8000"
     command: /start
-
   frontend:
     restart: always
     command : npm start
