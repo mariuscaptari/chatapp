@@ -1,6 +1,6 @@
 // import { setDefaultResultOrder } from 'dns';
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect, useRef} from 'react';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
 import { useParams } from "react-router-dom";
 import { MessageModel } from "../models/Message";
@@ -9,6 +9,7 @@ import { Message } from "./Message";
 import 'bulma/css/bulma.min.css';
 
 export function Chat() {
+  const bottomRef = useRef<null | HTMLDivElement>(null);
   const [messageHistory, setMessageHistory] = useState<any>([]);
   const [searchResult, setSearchResult] = useState<any>([]);
   const [message, setMessage] = useState("");
@@ -54,6 +55,10 @@ export function Chat() {
     [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
   }[readyState];
 
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({behavior: 'smooth'});
+  }, [message]);
+
   function handleChangeMessage(e: any) {
     setMessage(e.target.value)
   }
@@ -98,6 +103,7 @@ export function Chat() {
     console.log("after send json")
     setSearchMessage("");
   }
+
 
   return (
     <div>
@@ -157,6 +163,7 @@ export function Chat() {
               {messageHistory.map((message: MessageModel) => (
                 <Message key={message.id} message={message} />
               ))}
+              <div ref={bottomRef} />
             </div>
             <div className="field has-addons">
               <input

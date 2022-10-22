@@ -18,25 +18,26 @@ export function Startpage(this: any){
     function handleChangeName(e: any) {
         setName(e.target.value)
         let errors = "";
-        let formIsValid = true;
+        let formValid = true;
 
         //Name
-        if (!name) {
-            formIsValid = false;
+        if (!name || !room) {
+            formValid = false;
             errors = errors + "\n" +  "Cannot be empty";
         }
 
-        if (typeof name !== "undefined") {
+        if (typeof name !== "undefined" && typeof room !== "undefined"){
             if (name.match(/[^A-Za-z0-9]/)) {
-            formIsValid = false;
-            errors = errors + "\n" + "Only letters";
+                formValid = false;
             }
+            if (room.match(/[^A-Za-z0-9]/)) {
+                formValid = false;
         };
 
-        if (formIsValid) {
+        if (formValid) {
             routeChange()
             } else {
-            alert("Choose valid username, letters only");
+            alert("Choose valid username and roomnamesdasdfdsf \n Letter and numbers only");
         }
     }
     function handleChangeRoom(e: any) {
