@@ -29,17 +29,14 @@ services:
     depends_on:
       - cassandra
       - redis
-    volumes:
-      - .:/app:z
     env_file:
       - ./.envs/.local/.django
-      - ./.envs/.local/.postgres
     ports:
       - "8000:8000"
     command: /start
   frontend:
     restart: always
-    command : npm start
+    command: npm start
     image: mariuscaptari/frontend
     container_name: chat_app_local_frontend
     build:
@@ -52,8 +49,3 @@ services:
       - django
     volumes:
       - ./frontend:/app/frontend
-
-networks:
-  default:
-    name: default_network
-    driver: bridge

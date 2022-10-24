@@ -17,7 +17,7 @@ export function Chat() {
 
   const { room, name } = useParams();
 
-  const { readyState, sendJsonMessage } = useWebSocket("ws://127.0.0.1:8000/ws/" + room + "/", {
+  const { readyState, sendJsonMessage } = useWebSocket(`ws://${window.location.hostname}:8000/ws/${room}/`, {
     onOpen: () => {
       console.log("Connected!")
     },
@@ -29,16 +29,16 @@ export function Chat() {
       const data = JSON.parse(e.data)
       switch (data.type) {
         case 'chat_message_echo':
+          console.log("Received a new chat message!");
           setMessageHistory((prev: any) => prev.concat(data.message));
-          // setMessageHistory((prev: any) => [data.message, ...prev]);
           break;
         case "message_history":
+          console.log("Loaded chat history!")
           setMessageHistory(data.messages);
           break;
         case "search_results":
           console.log("Received search results!")
           setSearchResult(data.messages);
-          console.log(searchResult)
           break;
         default:
           console.error('Unknown message type!');
@@ -91,16 +91,14 @@ export function Chat() {
   };
 
   const handleSearch = () => {
-    console.log("before send json");
     // setSearchResult("Get searched messages from backend!");
     if (searchMessage.length === 0) return;
     if (searchMessage.length > 64) return;
-    console.log(searchMessage)
+    console.log("Searching for all texts with: " + searchMessage)
     sendJsonMessage({
       type: "search_messages",
       searchMessage: searchMessage,
     });
-    console.log("after send json")
     setSearchMessage("");
   }
 
@@ -140,7 +138,7 @@ export function Chat() {
               <p className="control">
                 <input
                   name="search"
-                  placeholder="Text to match"
+                  placeholder="Text to search"
                   className="input"
                   type="text"
                   onChange={handleChangesearchMessage}
@@ -178,14 +176,6 @@ export function Chat() {
             </div>
           </div>
         </div>
-      </div>
-      <div>
-        {/* <footer>
-          <p>
-            <strong>Chat App</strong> by Marius Captari and Lennard Froma (Group 15). The source code can be
-            found on <a href="https://github.com/rug-wacc/2022_group_15_s4865928_s2676699">GitHub</a>.
-          </p>
-        </footer> */}
       </div>
     </div>
   )

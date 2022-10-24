@@ -1,0 +1,48 @@
+###########################
+# Deployment
+###########################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django-deployment
+  labels:
+    app: django
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: django
+  template:
+    metadata:
+      labels:
+        app: django
+    spec:
+      containers:
+        - name: django-container
+          image: mariuscaptari/django
+          args:
+            - /start
+          envFrom:
+            - configMapRef:
+                name: django-config
+          # - secretRef:
+          #     name: django-secret
+          ports:
+            - containerPort: 8000
+              name: gunicorn
+
+---
+###########################
+# Cluster IP Service
+###########################
+apiVersion: v1
+kind: Service
+metadata:
+  name: django
+spec:
+  type: ClusterIP
+  selector:
+    app: django
+  ports:
+    - port: 8000
+      targetPort: 8000

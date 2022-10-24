@@ -50,9 +50,9 @@ DATABASES = {
         "ENGINE": "django_cassandra_engine",
         "NAME": "db",
         "TEST_NAME": "test_db",
-        "USER": "cassandra",
-        "PASSWORD": "cassandra",
-        "HOST": "cassandra",
+        "USER": env("CASSANDRA_USER"),
+        "PASSWORD": env("CASSANDRA_PASSWORD"),
+        "HOST": env("CASSANDRA_HOST"),
         "OPTIONS": {
             "replication": {"strategy_class": "SimpleStrategy", "replication_factor": 2}
         },
@@ -316,5 +316,20 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
+# CACHES
+# ------------------------------------------------------------------------------
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": env("REDIS_URL"),
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#             # Mimicing memcache behavior.
+#             # https://github.com/jazzband/django-redis#memcached-exceptions-behavior
+#             "IGNORE_EXCEPTIONS": True,
+#         },
+#     }
+# }
 
 CORS_ALLOWED_ORIGINS = ["http://localhost:3000"]

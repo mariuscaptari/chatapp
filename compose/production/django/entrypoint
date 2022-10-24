@@ -29,4 +29,3 @@ END
 >&2 echo 'Running start script...'
 
 exec "$@"
-
