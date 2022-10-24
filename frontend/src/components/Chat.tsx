@@ -1,6 +1,6 @@
 // import { setDefaultResultOrder } from 'dns';
 import React from 'react';
-import { useState, useEffect, useRef} from 'react';
+import { useState, useEffect, useRef } from 'react';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
 import { useParams } from "react-router-dom";
 import { MessageModel } from "../models/Message";
@@ -56,7 +56,7 @@ export function Chat() {
   }[readyState];
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({behavior: 'smooth'});
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [message]);
 
   function handleChangeMessage(e: any) {
@@ -120,20 +120,20 @@ export function Chat() {
         <div className="tile is-4 is-vertical is-parent">
           <div className="tile is-child box">
             <p className="title is-4">Rooms</p>
-              <ul className="is-lower-alpha">
-                <li>Channel 1</li>
-                <li>Channel 2</li>
-                <li>Channel 3</li>
-                <li>Channel ...</li>
-              </ul>
+            <ul className="is-lower-alpha">
+              <li>Channel 1</li>
+              <li>Channel 2</li>
+              <li>Channel 3</li>
+              <li>Channel ...</li>
+            </ul>
           </div>
           <div className="tile is-child box">
             <p className="title is-4">Search messages</p>
-              <div style={{ overflowY: 'scroll', height: '200px' }}>
-                {searchResult.map((message: MessageModel) => (
-                  <Message key={message.id} message={message} />
-                ))}
-              </div>
+            <div style={{ overflowY: 'scroll', height: '200px' }}>
+              {searchResult.map((message: MessageModel) => (
+                <Message key={message.id} message={message} />
+              ))}
+            </div>
             <div className="field has-addons">
               <p className="control">
                 <input
