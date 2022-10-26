@@ -6,6 +6,7 @@ metadata:
   name: nginx
   annotations:
     ingressclass.kubernetes.io/is-default-class: "true"
+    nginx.ingress.kubernetes.io/use-regex: "true"
     # nginx.ingress.kubernetes.io/proxy-read-timeout: "3600s"
     # nginx.ingress.kubernetes.io/proxy-send-timeout: "3600s"
 spec:
@@ -18,7 +19,8 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - http:
+    - host: chatapp.com
+      http:
         paths:
           - path: /
             pathType: Prefix
