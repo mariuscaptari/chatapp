@@ -17,7 +17,7 @@ The general data flow of our app is as follows:
 
 ## Multi-tier architecture tech stack
 
-To develop our chat application, we have choosen the following technologies:
+To develop our chat application, we have choosen the following technologies for each tier:
 
 ### Frontend
 
@@ -33,7 +33,7 @@ To develop our chat application, we have choosen the following technologies:
 
 ### Database
 
-- Cassandra
+- Cassandra **availability over consistency**
 
 ### Containarization and orchestration
 
@@ -42,7 +42,7 @@ To develop our chat application, we have choosen the following technologies:
 
 ## How to run
 
-To start the front-end, back-end, database and redis:
+To start the app:
 
 ```shell
 docker compose -f local.yml up -d
