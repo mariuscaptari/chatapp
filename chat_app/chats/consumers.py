@@ -99,16 +99,17 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
 
     @sync_to_async
     def get_last_messages(self, room):
+        number_msg_to_load = 50
         messages = Message.objects.filter(room=room)
-        return list(reversed(messages[0:10]))
+        return list(reversed(messages[0:number_msg_to_load]))
 
     @sync_to_async
     def get_substring_messages(self, substring):
         like_substring = f"%{substring}%"
         q = Message.objects.filter(room=self.room_name)
         q = q.filter(content__like=like_substring).allow_filtering()
-        # print(q)
-        return q[0:10]
+        number_msg_to_load = 50
+        return q[0:number_msg_to_load]
 
     @sync_to_async
     def serialize_messages(self, messages):
