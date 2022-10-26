@@ -17,7 +17,7 @@ export function Chat() {
 
   const { room, name } = useParams();
   //const { readyState, sendJsonMessage } = useWebSocket(`ws://localhost:8000/ws/${room}/`, {
-  const { readyState, sendJsonMessage } = useWebSocket(`ws://${window.location.hostname}:8000/ws/${room}/`, {
+  const { readyState, sendJsonMessage } = useWebSocket(`ws://${window.location.hostname}/ws/${room}/`, {
     onOpen: () => {
       console.log("Connected!")
     },
