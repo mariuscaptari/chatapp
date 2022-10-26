@@ -13,7 +13,7 @@ spec:
     - ReadWriteOnce
   hostPath:
     path: /tmp/data/cassandra-data-1
-  persistentVolumeReclaimPolicy: Retain
+  persistentVolumeReclaimPolicy: Recycle
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -29,7 +29,7 @@ spec:
     - ReadWriteOnce
   hostPath:
     path: /tmp/data/cassandra-data-2
-  persistentVolumeReclaimPolicy: Retain
+  persistentVolumeReclaimPolicy: Recycle
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -45,4 +45,4 @@ spec:
     - ReadWriteOnce
   hostPath:
     path: /tmp/data/cassandra-data-3
-  persistentVolumeReclaimPolicy: Retain
+  persistentVolumeReclaimPolicy: Recycle

@@ -17,7 +17,7 @@ export function Chat() {
 
   const { room, name } = useParams();
   //const { readyState, sendJsonMessage } = useWebSocket(`ws://localhost:8000/ws/${room}/`, {
-  const { readyState, sendJsonMessage } = useWebSocket(`ws://${window.location.hostname}:8000/ws/${room}/`, {
+  const { readyState, sendJsonMessage } = useWebSocket(`ws://${window.location.hostname}/ws/${room}/`, {
     onOpen: () => {
       console.log("Connected!")
     },
@@ -105,7 +105,7 @@ export function Chat() {
 
   return (
     <div>
-      <section className="hero is-small is-info">
+      <section className="hero is-small is-link">
         <div className="hero-body">
           <p className="title">
             ChatApp 🎃
@@ -148,14 +148,14 @@ export function Chat() {
               </p>
               <p>
                 <button
-                  className='button' onClick={handleSearch}>Search</button>
+                  className='button is-warning is-ligh ml-1' onClick={handleSearch}>Search</button>
               </p>
             </div>
           </div>
         </div>
         <div className="tile is-parent">
           <div className="tile is-child box">
-            <p className="title"> <small className="has-text-grey-light">Chating as</small> {name} <small className="has-text-grey-light"> in </small>{room}</p>
+            <p className="title"> <small className="has-text-grey-light">Chating as</small> {name} <small className="has-text-grey-light"> inside </small>{room}</p>
             <span className="pb-2 has-text-grey-light">The connection is currently: {connectionStatus}</span>
             <div style={{ overflowY: 'scroll', height: '450px' }} className="box">
               {messageHistory.map((message: MessageModel) => (
@@ -172,7 +172,7 @@ export function Chat() {
                 onKeyDown={handleKeypressSubmit}
                 value={message}
                 className="input is-focused" />
-              <button className='button' onClick={handleSubmit}>Send</button>
+              <button className='button is-info ml-1' onClick={handleSubmit}>Send</button>
             </div>
           </div>
         </div>

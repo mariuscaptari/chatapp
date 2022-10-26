@@ -32,7 +32,7 @@ export function Startpage(this: any) {
         if (formIsValid) {
             routeChange()
         } else {
-            alert("Invalid room or nickname. Please user only letters and numbers, without any spaces or special characters.");
+            alert("Invalid room or nickname. Please use only letters and numbers, without any spaces or special characters.");
         }
     }
     function handleChangeRoom(e: any) {
@@ -41,7 +41,7 @@ export function Startpage(this: any) {
 
     return (
         <div>
-            <section className="hero is-small is-info">
+            <section className="hero is-small is-link">
                 <div className="hero-body">
                     <p className="title">
                         ChatApp 🎃
@@ -51,48 +51,48 @@ export function Startpage(this: any) {
                     </p>
                 </div>
             </section>
-
-            <div className="container is-centered mt-6">
-                <div className="field">
-                    <label className="label">Room name</label>
-                    <div className="control">
-                        <input
-                            autoFocus
-                            className="input"
-                            type="text"
-                            placeholder="Room name"
-                            onChange={handleChangeRoom}
-                            required
-                        />
+            <div className="columns is-mobile mt-2">
+                <div className="column is-4 is-offset-4">
+                    <div className="field">
+                        <label className="label">Room name</label>
+                        <div className="control">
+                            <input
+                                autoFocus
+                                className="input"
+                                type="text"
+                                placeholder="Room name"
+                                onChange={handleChangeRoom}
+                                required
+                            />
+                        </div>
                     </div>
-                </div>
-                <div className="field">
-                    <label className="label">Nickname</label>
-                    <div className="control">
-                        <input
-                            className="input"
-                            type="text"
-                            placeholder="Name"
-                            onChange={changeName}
-                            required
-                        />
+                    <div className="field">
+                        <label className="label">Nickname</label>
+                        <div className="control">
+                            <input
+                                className="input"
+                                type="text"
+                                placeholder="Name"
+                                onChange={changeName}
+                                required
+                            />
+                        </div>
                     </div>
-                </div>
-                <div className="field">
-                    <div className="control">
-                        <button className="button is-info" onClick={handleChangeName}>Connect</button>
+                    <div className="field">
+                        <div className="control">
+                            <button className="button is-success" onClick={handleChangeName}>Connect</button>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div>
-                <footer>
+            <footer className="footer">
+                <div className="content has-text-centered">
                     <p>
                         <strong>Chat App</strong> by Marius Captari and Lennard Froma (Group 15). The source code can be
-                        found on
-                        <a href="https://github.com/rug-wacc/2022_group_15_s4865928_s2676699">GitHub</a>.
+                        found on <a href="https://github.com/rug-wacc/2022_group_15_s4865928_s2676699">GitHub</a>.
                     </p>
-                </footer>
-            </div>
+                </div>
+            </footer>
         </div>
     )
 };
