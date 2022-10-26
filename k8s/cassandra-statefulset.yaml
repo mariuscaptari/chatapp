@@ -5,7 +5,7 @@ metadata:
   name: cassandra
 spec:
   serviceName: cassandra
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: cassandra
@@ -16,8 +16,12 @@ spec:
     spec:
       containers:
         - name: cassandra
-          image: cassandra:4
-          imagePullPolicy: IfNotPresent
+          image: cassandra:4.1
+          imagePullPolicy: Always
+          lifecycle:
+            postStart:
+              exec:
+                command: ["/bin/sh", "-c", "echo sasi_indexes_enabled: true >> /etc/cassandra/cassandra.yaml"]
           ports:
             - containerPort: 7000
               name: intra-node
@@ -45,12 +49,23 @@ spec:
           volumeMounts:
             - name: cassandra-data
               mountPath: /var/lib/cassandra/data
+            # - name: cassandra-configmap-volume
+            #   mountPath: /etc/cassandra/cassandra.yaml
+            #   subPath: cassandra.yaml
+      # volumes:
+      # - name: cassandra-configmap-volume
+      #   configMap:
+      #     name: cassandra-configmap
+      #     defaultMode: 0666
+      #     items:
+      #     - key: mycassandra.yaml
+      #       path: cassandra.yaml
   volumeClaimTemplates:
     - metadata:
         name: cassandra-data
-        annotations:  # comment line if you want to use a StorageClass
+        annotations: # comment line if you want to use a StorageClass
           # or specify which StorageClass
-          volume.beta.kubernetes.io/storage-class: ""   # comment line if you
+          volume.beta.kubernetes.io/storage-class: "" # comment line if you
           # want to use a StorageClass or specify which StorageClass
       spec:
         accessModes: ["ReadWriteOnce"]

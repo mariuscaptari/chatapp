@@ -33,6 +33,8 @@ services:
       - ./.envs/.local/.django
     ports:
       - "8000:8000"
+    volumes:
+      - .:/app:z
     command: /start
   frontend:
     restart: always
@@ -48,4 +50,4 @@ services:
     depends_on:
       - django
     volumes:
-      - ./frontend:/app/frontend
+      - ./frontend:/app/frontend:z

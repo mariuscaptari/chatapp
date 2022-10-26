@@ -8,7 +8,7 @@ metadata:
   labels:
     app: django
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: django
@@ -29,7 +29,6 @@ spec:
           #     name: django-secret
           ports:
             - containerPort: 8000
-              name: gunicorn
 
 ---
 ###########################
@@ -38,7 +37,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: django
+  name: django-ip
 spec:
   type: ClusterIP
   selector:
@@ -46,3 +45,17 @@ spec:
   ports:
     - port: 8000
       targetPort: 8000
+---
+###########################
+# Config Map
+###########################
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: django-config
+data:
+  REDIS_HOST: redis
+  REDIS_PORT: "6379"
+  CASSANDRA_HOST: cassandra.default.svc.cluster.local
+  CASSANDRA_USER: "cassandra"
+  CASSANDRA_PASSWORD: "cassandra"
