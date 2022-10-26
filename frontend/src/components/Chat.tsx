@@ -1,6 +1,6 @@
 // import { setDefaultResultOrder } from 'dns';
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
 import { useParams } from "react-router-dom";
 import { MessageModel } from "../models/Message";
@@ -9,14 +9,15 @@ import { Message } from "./Message";
 import 'bulma/css/bulma.min.css';
 
 export function Chat() {
+  const bottomRef = useRef<null | HTMLDivElement>(null);
   const [messageHistory, setMessageHistory] = useState<any>([]);
   const [searchResult, setSearchResult] = useState<any>([]);
   const [message, setMessage] = useState("");
   const [searchMessage, setSearchMessage] = useState("");
 
   const { room, name } = useParams();
-
-  const { readyState, sendJsonMessage } = useWebSocket("ws://127.0.0.1:8000/ws/" + room + "/", {
+  //const { readyState, sendJsonMessage } = useWebSocket(`ws://localhost:8000/ws/${room}/`, {
+  const { readyState, sendJsonMessage } = useWebSocket(`ws://${window.location.hostname}:8000/ws/${room}/`, {
     onOpen: () => {
       console.log("Connected!")
     },
@@ -28,16 +29,16 @@ export function Chat() {
       const data = JSON.parse(e.data)
       switch (data.type) {
         case 'chat_message_echo':
+          console.log("Received a new chat message!");
           setMessageHistory((prev: any) => prev.concat(data.message));
-          // setMessageHistory((prev: any) => [data.message, ...prev]);
           break;
         case "message_history":
+          console.log("Loaded chat history!")
           setMessageHistory(data.messages);
           break;
         case "search_results":
           console.log("Received search results!")
           setSearchResult(data.messages);
-          console.log(searchResult)
           break;
         default:
           console.error('Unknown message type!');
@@ -53,6 +54,10 @@ export function Chat() {
     [ReadyState.CLOSED]: 'Closed',
     [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
   }[readyState];
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [message]);
 
   function handleChangeMessage(e: any) {
     setMessage(e.target.value)
@@ -86,18 +91,17 @@ export function Chat() {
   };
 
   const handleSearch = () => {
-    console.log("before send json");
     // setSearchResult("Get searched messages from backend!");
     if (searchMessage.length === 0) return;
     if (searchMessage.length > 64) return;
-    console.log(searchMessage)
+    console.log("Searching for all texts with: " + searchMessage)
     sendJsonMessage({
       type: "search_messages",
       searchMessage: searchMessage,
     });
-    console.log("after send json")
     setSearchMessage("");
   }
+
 
   return (
     <div>
@@ -116,25 +120,25 @@ export function Chat() {
         <div className="tile is-4 is-vertical is-parent">
           <div className="tile is-child box">
             <p className="title is-4">Rooms</p>
-              <ul className="is-lower-alpha">
-                <li>Channel 1</li>
-                <li>Channel 2</li>
-                <li>Channel 3</li>
-                <li>Channel ...</li>
-              </ul>
+            <ul className="is-lower-alpha">
+              <li>Channel 1</li>
+              <li>Channel 2</li>
+              <li>Channel 3</li>
+              <li>Channel ...</li>
+            </ul>
           </div>
           <div className="tile is-child box">
             <p className="title is-4">Search messages</p>
-              <div style={{ overflowY: 'scroll', height: '200px' }}>
-                {searchResult.map((message: MessageModel) => (
-                  <Message key={message.id} message={message} />
-                ))}
-              </div>
+            <div style={{ overflowY: 'scroll', height: '200px' }}>
+              {searchResult.map((message: MessageModel) => (
+                <Message key={message.id} message={message} />
+              ))}
+            </div>
             <div className="field has-addons">
               <p className="control">
                 <input
                   name="search"
-                  placeholder="Text to match"
+                  placeholder="Text to search"
                   className="input"
                   type="text"
                   onChange={handleChangesearchMessage}
@@ -157,6 +161,7 @@ export function Chat() {
               {messageHistory.map((message: MessageModel) => (
                 <Message key={message.id} message={message} />
               ))}
+              <div ref={bottomRef} />
             </div>
             <div className="field has-addons">
               <input
@@ -171,14 +176,6 @@ export function Chat() {
             </div>
           </div>
         </div>
-      </div>
-      <div>
-        {/* <footer>
-          <p>
-            <strong>Chat App</strong> by Marius Captari and Lennard Froma (Group 15). The source code can be
-            found on <a href="https://github.com/rug-wacc/2022_group_15_s4865928_s2676699">GitHub</a>.
-          </p>
-        </footer> */}
       </div>
     </div>
   )

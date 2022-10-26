@@ -1,0 +1,41 @@
+###########################
+# Deployment
+###########################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - args:
+            - npm
+            - start
+          name: frontend-container
+          image: mariuscaptari/frontend
+          ports:
+            - containerPort: 3000
+          stdin: true
+---
+###########################
+# Cluster IP Service
+###########################
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-ip
+spec:
+  type: ClusterIP
+  selector:
+    app: frontend
+  ports:
+    - port: 3000
+      targetPort: 3000

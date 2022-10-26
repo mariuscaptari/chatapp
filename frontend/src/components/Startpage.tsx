@@ -3,40 +3,36 @@ import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import 'bulma/css/bulma.min.css';
 
-export function Startpage(this: any){
+export function Startpage(this: any) {
     const [room, setRoom] = useState("")
     const [name, setName] = useState("")
 
     let navigate = useNavigate();
-    const routeChange = () =>{
-      let path = room + '/' + name;
-      navigate(path);
+    const routeChange = () => {
+        let path = room + '/' + name;
+        navigate(path);
     }
-    function changeName(e: any){
+    function changeName(e: any) {
         setName(e.target.value)
     }
     function handleChangeName(e: any) {
         setName(e.target.value)
-        let errors = "";
         let formIsValid = true;
 
-        //Name
         if (!name) {
             formIsValid = false;
-            errors = errors + "\n" +  "Cannot be empty";
         }
 
         if (typeof name !== "undefined") {
             if (name.match(/[^A-Za-z0-9]/)) {
-            formIsValid = false;
-            errors = errors + "\n" + "Only letters";
+                formIsValid = false;
             }
         };
 
         if (formIsValid) {
             routeChange()
-            } else {
-            alert("Choose valid username, letters only");
+        } else {
+            alert("Invalid room or nickname. Please user only letters and numbers, without any spaces or special characters.");
         }
     }
     function handleChangeRoom(e: any) {
@@ -70,34 +66,32 @@ export function Startpage(this: any){
                         />
                     </div>
                 </div>
-
                 <div className="field">
                     <label className="label">Nickname</label>
                     <div className="control">
                         <input
-                        className="input"
-                        type="text"
-                        placeholder="Name"
-                        onChange={changeName}
-                        required
+                            className="input"
+                            type="text"
+                            placeholder="Name"
+                            onChange={changeName}
+                            required
                         />
                     </div>
                 </div>
-
                 <div className="field">
                     <div className="control">
-                        <a className="button is-info" onClick={handleChangeName}>Connect</a>
+                        <button className="button is-info" onClick={handleChangeName}>Connect</button>
                     </div>
                 </div>
             </div>
             <div>
-            <footer>
-                <p>
-                    <strong>Chat App</strong> by Marius Captari and Lennard Froma (Group 15). The source code can be
+                <footer>
+                    <p>
+                        <strong>Chat App</strong> by Marius Captari and Lennard Froma (Group 15). The source code can be
                         found on
-                    <a href="https://github.com/rug-wacc/2022_group_15_s4865928_s2676699">GitHub</a>.
-                </p>
-            </footer>
+                        <a href="https://github.com/rug-wacc/2022_group_15_s4865928_s2676699">GitHub</a>.
+                    </p>
+                </footer>
             </div>
         </div>
     )

@@ -31,7 +31,6 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
 
     async def connect(self):
         self.room_name = self.scope["url_route"]["kwargs"]["room"]
-        # self.room_group_name = "chat_%s" % self.room_name
         await self.channel_layer.group_add(
             self.room_name,
             self.channel_name,

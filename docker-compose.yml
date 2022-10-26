@@ -18,30 +18,28 @@ services:
       - "9042:9042"
     volumes:
       - chat_app_local_cassandra_data:/var/lib/cassandra:Z
-      - ./cassandra.yaml:/etc/cassandra/cassandra.yaml:z
+      - ./cassandra_config/cassandra.yaml:/etc/cassandra/cassandra.yaml:z
   django:
     restart: always
     build:
       context: .
       dockerfile: ./compose/local/django/Dockerfile
-    image: chat_app_local_django
+    image: mariuscaptari/django
     container_name: chat_app_local_django
-    platform: linux/x86_64
     depends_on:
       - cassandra
       - redis
-    volumes:
-      - .:/app:z
     env_file:
       - ./.envs/.local/.django
-      - ./.envs/.local/.postgres
     ports:
       - "8000:8000"
+    volumes:
+      - .:/app:z
     command: /start
-
   frontend:
     restart: always
-    command : npm start
+    command: npm start
+    image: mariuscaptari/frontend
     container_name: chat_app_local_frontend
     build:
       context: .
@@ -52,9 +50,4 @@ services:
     depends_on:
       - django
     volumes:
-      - ./frontend:/app/frontend
-
-networks:
-  default:
-    name: default_network
-    driver: bridge
+      - ./frontend:/app/frontend:z
