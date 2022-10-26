@@ -5,24 +5,23 @@ metadata:
     app.kubernetes.io/component: controller
   name: nginx
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
     ingressclass.kubernetes.io/is-default-class: "true"
-    nginx.ingress.kubernetes.io/use-regex: "true"
+    # nginx.ingress.kubernetes.io/use-regex: "true"
     # nginx.ingress.kubernetes.io/rewrite-target: "/$2"
     # nginx.ingress.kubernetes.io/websocket-services: "app-sockets-cluster-ip-service"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
-    nginx.ingress.kubernetes.io/server-snippets: |
-      location / {
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_http_version 1.1;
-        proxy_set_header X-Forwarded-Host $http_host;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header X-Forwarded-For $remote_addr;
-        proxy_set_header Host $host;
-        proxy_set_header Connection "upgrade";
-        proxy_cache_bypass $http_upgrade;
-        }
+    # nginx.ingress.kubernetes.io/server-snippets: |
+    #   location / {
+    #     proxy_set_header Upgrade $http_upgrade;
+    #     proxy_http_version 1.1;
+    #     proxy_set_header X-Forwarded-Host $http_host;
+    #     proxy_set_header X-Forwarded-Proto $scheme;
+    #     proxy_set_header X-Forwarded-For $remote_addr;
+    #     proxy_set_header Host $host;
+    #     proxy_set_header Connection "upgrade";
+    #     proxy_cache_bypass $http_upgrade;
+    #     }
 spec:
   controller: k8s.io/ingress-nginx
 ---
@@ -33,8 +32,8 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    # - host: chatapp.com
-    - http:
+    - host: chatapp.com
+      http:
         paths:
           - path: /
             pathType: Prefix
