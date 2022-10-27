@@ -22,18 +22,18 @@ export function SearchedMessage({ message }: { message: MessageModel }) {
 
     return (
         <div
-            className={classNames(
-                "is-flex my-0",
-                message.name === name ? "is-justify-content-flex-end" : "is-justify-content-flex-start"
-            )}>
-            <div className={"box py-2 px-2 mr-2 has-background-warning"}>
+            className={"is-flex"}>
+            <div className={"box py-1 px-1 my-1 mx-1"}>
                 <div className="is-flex">
-                    <span className=""><b>{message.room}</b></span>
+                    <span style={{
+                    fontSize: "0.6rem",
+                    lineHeight: "2rem"
+                }} className=" has-text-grey">{message.room}</span>
                 </div>
             </div>
-            <div
+            <div style={{ borderRadius: '0.8rem'}}
                 className={classNames(
-                    "box py-2 px-2",
+                    "box py-2 px-2 my-1 mx-1",
                     message.name === name ? "has-background-info has-text-white" : "has-background-light"
                 )}
             >
@@ -48,16 +48,16 @@ export function SearchedMessage({ message }: { message: MessageModel }) {
                     lineHeight: "1rem"
                 }}
             >
-                {formatMessageTimestamp(message.date_added)}
+                {formatMessageDate(message.date_added)}
             </span>
             <span
-                className="mx-2"
+                className="mx-1"
                 style={{
                     fontSize: "0.6rem",
                     lineHeight: "1rem"
                 }}
             >
-                {formatMessageDate(message.date_added)}
+                {formatMessageTimestamp(message.date_added)}
             </span>
         </div>
     );

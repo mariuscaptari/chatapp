@@ -20,25 +20,25 @@ export function Message({ message }: { message: MessageModel }) {
                 message.name === name ? "is-justify-content-flex-end" : "is-justify-content-flex-start"
             )}
         >
-            <div
+            <div style={{ borderRadius: '0.8rem'}}
                 className={classNames(
-                    "box py-2 px-2",
+                    "box py-2 px-2 m-0",
                     message.name === name ? "has-background-info has-text-white" : "has-background-light"
                 )}
             >
                 <div className="is-flex">
                     <span className=""><b>{message.name}</b>: {message.content}</span>
-                    <span
-                        className="ml-2"
-                        style={{
-                            fontSize: "0.6rem",
-                            lineHeight: "1rem"
-                        }}
-                    >
-                        {formatMessageTimestamp(message.date_added)}
-                    </span>
                 </div>
             </div>
+            <span
+                className="mx-1"
+                style={{
+                    fontSize: "0.6rem",
+                    lineHeight: "1rem",
+                }}
+            >
+                {formatMessageTimestamp(message.date_added)}
+            </span>
         </div>
     );
 }

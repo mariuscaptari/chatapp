@@ -24,6 +24,7 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
         super().__init__(args, kwargs)
         self.room_name = None
         self.name = None
+        self.history_size = 50
 
     @classmethod
     async def encode_json(cls, content):
@@ -39,8 +40,15 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
         await self.accept()
         print("Acepted!")
         print("Retriving message history...")
+        rooms = await self.get_rooms()
+        await self.send_json(
+            {
+                "type": "room_list",
+                "rooms": rooms,
+            }
+        )
         messages = await self.get_last_messages(room=self.room_name)
-        serialized_messages = await self.serialize_messages(messages)
+        serialized_messages = await self.serialize_messages(messages, multiple=True)
         await self.send_json(
             {
                 "type": "message_history",
@@ -59,7 +67,7 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
             message = await self.save_message(
                 name=content["name"], room=self.room_name, message=content["message"]
             )
-            serialized_message = await self.serialize_one_message(message)
+            serialized_message = await self.serialize_messages(message, multiple=False)
             print("Received message: ")
             print(serialized_message)
             await self.channel_layer.group_send(
@@ -75,7 +83,7 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
             messages = await self.get_substring_messages(
                 substring=content["searchMessage"]
             )
-            serialized_messages = await self.serialize_messages(messages)
+            serialized_messages = await self.serialize_messages(messages, multiple=True)
             print("Query result: ", serialized_messages)
             await self.send_json(
                 {
@@ -99,22 +107,21 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
 
     @sync_to_async
     def get_last_messages(self, room):
-        number_msg_to_load = 50
         messages = Message.objects.filter(room=room)
-        return list(reversed(messages[0:number_msg_to_load]))
+        return list(reversed(messages[0:self.history_size]))
 
     @sync_to_async
     def get_substring_messages(self, substring):
-        like_substring = f"%{substring}%"
+        query_substring = f"%{substring}%"
         # q = Message.objects.filter(room=self.room_name)
-        q = Message.objects.filter(content__like=like_substring).allow_filtering()
-        number_msg_to_load = 50
-        return q[0:number_msg_to_load]
+        q = Message.objects.filter(content__like=query_substring) #.allow_filtering()
+        return q[0:self.history_size]
 
     @sync_to_async
-    def serialize_messages(self, messages):
-        return MessageSerializer(messages, many=True).data
+    def get_rooms(self):
+        query_set = Message.objects.all().distinct()
+        return list(map(lambda x: x.room, list(query_set)))
 
     @sync_to_async
-    def serialize_one_message(self, message):
-        return MessageSerializer(message).data
+    def serialize_messages(self, messages, multiple):
+        return MessageSerializer(messages, many=multiple).data

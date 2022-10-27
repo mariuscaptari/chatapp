@@ -10,5 +10,4 @@ class Message(DjangoCassandraModel):
     date_added = columns.DateTime()
 
     class Meta:
-        # ordering = ("date_added",)
         get_pk_field = "room"

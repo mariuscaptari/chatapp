@@ -1,12 +1,9 @@
-// import { setDefaultResultOrder } from 'dns';
-import React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { MessageModel } from "../models/Message";
 import { Message } from "./Message";
 import { SearchedMessage } from "./SearchedMessage";
-
 
 import 'bulma/css/bulma.min.css';
 
@@ -15,6 +12,7 @@ export function Chat() {
   const bottomRefSearch = useRef<null | HTMLDivElement>(null);
   const [messageHistory, setMessageHistory] = useState<any>([]);
   const [searchResult, setSearchResult] = useState<any>([]);
+  const [roomList, setRoomList] = useState<any>([]);
   const [message, setMessage] = useState("");
   const [searchMessage, setSearchMessage] = useState("");
 
@@ -43,12 +41,18 @@ export function Chat() {
           console.log("Received search results!")
           setSearchResult(data.messages);
           break;
+        case "room_list":
+          console.log("Received list of rooms!")
+          setRoomList(data.rooms);
+          break;
         default:
           console.error('Unknown message type!');
           break;
       }
     }
   });
+
+  <Link to="/about">About</Link>
 
   const connectionStatus = {
     [ReadyState.CONNECTING]: 'Connecting',
@@ -77,7 +81,7 @@ export function Chat() {
         })
     }
   }, [searchResult])
-  
+
 
   function handleChangeMessage(e: any) {
     setMessage(e.target.value)
@@ -111,7 +115,6 @@ export function Chat() {
   };
 
   const handleSearch = () => {
-    // setSearchResult("Searching across all rooms...");
     if (searchMessage.length === 0) return;
     if (searchMessage.length > 64) return;
     console.log("Searching for all texts with: " + searchMessage)
@@ -122,11 +125,17 @@ export function Chat() {
     setSearchMessage("");
   }
 
+  let navigate = useNavigate();
+  const routeChange = () => {
+    let path = room + '/' + name;
+    navigate(path);
+  }
+
   return (
     <div>
       <section className="hero is-small has-background-info-light">
         <div className="hero-body">
-          <p className="title">
+          <p className="title has-text-info-dark">
             ChatApp 🍣
           </p>
           <p className="subtitle">
@@ -136,14 +145,17 @@ export function Chat() {
       </section>
 
       <div className="tile is-ancestor">
-        <div className="tile is-5 is-vertical is-parent">
+        <div className="tile is-4 is-vertical is-parent">
           <div className="tile is-child box">
             <p className="title is-4">Rooms</p>
-            <ul className="is-lower-alpha">
-              <li>Channel 1</li>
-              <li>Channel 2</li>
-              <li>Channel 3</li>
-              <li>Channel ...</li>
+            <ul style={{ overflowY: 'scroll', height: '180px' }}>
+              {roomList.map((room: string, index: number) =>
+                <li key={index}>
+                  <Link to={`/${room}/${name}`} className="" >
+                    {room}
+                  </Link>
+                </li>
+              )}
             </ul>
           </div>
           <div className="tile is-child box">
@@ -174,7 +186,7 @@ export function Chat() {
         <div className="tile is-parent">
           <div className="tile is-child box">
             <p className="title"> <small className="has-text-grey-light">Chating as</small> {name} <small className="has-text-grey-light"> inside </small>{room}</p>
-            <span className="has-text-grey-light">The connection is currently: {connectionStatus}</span>
+            <span className="has-text-grey-light">The connection is currently: {connectionStatus} </span>
             <div style={{ overflowY: 'scroll', height: '450px' }} className="box mt-2">
               {messageHistory.map((message: MessageModel) => (
                 <Message key={message.id} message={message} />
@@ -190,7 +202,7 @@ export function Chat() {
                 onKeyDown={handleKeypressSubmit}
                 value={message}
                 className="input is-focused" />
-              <button className='button is-info ml-1' onClick={handleSubmit}>Send</button>
+              <button className='button is-success ml-1' onClick={handleSubmit}>Send</button>
             </div>
           </div>
         </div>
