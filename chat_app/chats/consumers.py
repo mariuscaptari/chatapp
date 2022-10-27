@@ -106,8 +106,8 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
     @sync_to_async
     def get_substring_messages(self, substring):
         like_substring = f"%{substring}%"
-        q = Message.objects.filter(room=self.room_name)
-        q = q.filter(content__like=like_substring).allow_filtering()
+        # q = Message.objects.filter(room=self.room_name)
+        q = Message.objects.filter(content__like=like_substring).allow_filtering()
         number_msg_to_load = 50
         return q[0:number_msg_to_load]
 

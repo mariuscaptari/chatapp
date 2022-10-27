@@ -12,7 +12,7 @@ python << END
 from cassandra.auth import PlainTextAuthProvider
 from cassandra.cluster import Cluster
 
-print("CREATING INDEX IN CASSANDRA TABLE")
+print("Creating Index in Cassandra table...")
 
 auth_provider = PlainTextAuthProvider(username="cassandra", password="cassandra")
 

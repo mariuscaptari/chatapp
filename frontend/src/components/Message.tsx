@@ -16,22 +16,22 @@ export function Message({ message }: { message: MessageModel }) {
     return (
         <div
             className={classNames(
-                "mt-1 mb-1 flex",
-                message.name === name ? "justify-end" : "justify-start"
+                "is-flex mt-2",
+                message.name === name ? "is-justify-content-flex-end" : "is-justify-content-flex-start"
             )}
         >
             <div
                 className={classNames(
-                    "relative max-w-xl rounded-lg px-2 py-1 text-gray-700 shadow",
-                    message.name === name ? "" : "bg-gray-100"
+                    "box py-2 px-2",
+                    message.name === name ? "has-background-info has-text-white" : "has-background-light"
                 )}
             >
-                <div className="flex items-end">
-                    <span className="block"><b>{message.name}</b>: {message.content}</span>
+                <div className="is-flex">
+                    <span className=""><b>{message.name}</b>: {message.content}</span>
                     <span
                         className="ml-2"
                         style={{
-                            fontSize: "0.5rem",
+                            fontSize: "0.6rem",
                             lineHeight: "1rem"
                         }}
                     >

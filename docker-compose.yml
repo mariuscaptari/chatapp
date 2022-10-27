@@ -50,4 +50,4 @@ services:
     depends_on:
       - django
     volumes:
-      - ./frontend:/app/frontend:z
+      - ./frontend:/app/:z

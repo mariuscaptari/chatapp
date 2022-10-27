@@ -5,19 +5,22 @@ import useWebSocket, { ReadyState } from 'react-use-websocket';
 import { useParams } from "react-router-dom";
 import { MessageModel } from "../models/Message";
 import { Message } from "./Message";
+import { SearchedMessage } from "./SearchedMessage";
+
 
 import 'bulma/css/bulma.min.css';
 
 export function Chat() {
-  const bottomRef = useRef<null | HTMLDivElement>(null);
+  const bottomRefHistory = useRef<null | HTMLDivElement>(null);
+  const bottomRefSearch = useRef<null | HTMLDivElement>(null);
   const [messageHistory, setMessageHistory] = useState<any>([]);
   const [searchResult, setSearchResult] = useState<any>([]);
   const [message, setMessage] = useState("");
   const [searchMessage, setSearchMessage] = useState("");
 
   const { room, name } = useParams();
-  //const { readyState, sendJsonMessage } = useWebSocket(`ws://localhost:8000/ws/${room}/`, {
-  const { readyState, sendJsonMessage } = useWebSocket(`ws://${window.location.hostname}/ws/${room}/`, {
+  const { readyState, sendJsonMessage } = useWebSocket(`ws://localhost:8000/ws/${room}/`, {
+    //const { readyState, sendJsonMessage } = useWebSocket(`ws://${window.location.hostname}/ws/${room}/`, {
     onOpen: () => {
       console.log("Connected!")
     },
@@ -56,8 +59,25 @@ export function Chat() {
   }[readyState];
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [message]);
+    if (bottomRefHistory.current) {
+      bottomRefHistory.current.scrollIntoView(
+        {
+          behavior: 'smooth',
+          block: 'start',
+        })
+    }
+  }, [messageHistory])
+
+  useEffect(() => {
+    if (bottomRefSearch.current) {
+      bottomRefSearch.current.scrollIntoView(
+        {
+          behavior: 'smooth',
+          block: 'start',
+        })
+    }
+  }, [searchResult])
+  
 
   function handleChangeMessage(e: any) {
     setMessage(e.target.value)
@@ -91,7 +111,7 @@ export function Chat() {
   };
 
   const handleSearch = () => {
-    // setSearchResult("Get searched messages from backend!");
+    // setSearchResult("Searching across all rooms...");
     if (searchMessage.length === 0) return;
     if (searchMessage.length > 64) return;
     console.log("Searching for all texts with: " + searchMessage)
@@ -105,7 +125,7 @@ export function Chat() {
 
   return (
     <div>
-      <section className="hero is-small is-link">
+      <section className="hero is-small is-warning">
         <div className="hero-body">
           <p className="title">
             ChatApp 🎃
@@ -117,7 +137,7 @@ export function Chat() {
       </section>
 
       <div className="tile is-ancestor">
-        <div className="tile is-4 is-vertical is-parent">
+        <div className="tile is-5 is-vertical is-parent">
           <div className="tile is-child box">
             <p className="title is-4">Rooms</p>
             <ul className="is-lower-alpha">
@@ -131,24 +151,23 @@ export function Chat() {
             <p className="title is-4">Search messages</p>
             <div style={{ overflowY: 'scroll', height: '200px' }}>
               {searchResult.map((message: MessageModel) => (
-                <Message key={message.id} message={message} />
+                <SearchedMessage key={message.id} message={message} />
               ))}
+              <div ref={bottomRefSearch} />
             </div>
-            <div className="field has-addons">
-              <p className="control">
-                <input
-                  name="search"
-                  placeholder="Text to search"
-                  className="input"
-                  type="text"
-                  onChange={handleChangesearchMessage}
-                  onKeyDown={handleKeypressSearch}
-                  value={searchMessage}
-                />
-              </p>
+            <div className="mt-4 field has-addons">
+              <input
+                name="search"
+                placeholder="Text to search across all rooms"
+                className="input"
+                type="text"
+                onChange={handleChangesearchMessage}
+                onKeyDown={handleKeypressSearch}
+                value={searchMessage}
+              />
               <p>
                 <button
-                  className='button is-warning is-ligh ml-1' onClick={handleSearch}>Search</button>
+                  className='button is-info is-light ml-1' onClick={handleSearch}>Search</button>
               </p>
             </div>
           </div>
@@ -156,12 +175,12 @@ export function Chat() {
         <div className="tile is-parent">
           <div className="tile is-child box">
             <p className="title"> <small className="has-text-grey-light">Chating as</small> {name} <small className="has-text-grey-light"> inside </small>{room}</p>
-            <span className="pb-2 has-text-grey-light">The connection is currently: {connectionStatus}</span>
-            <div style={{ overflowY: 'scroll', height: '450px' }} className="box">
+            <span className="has-text-grey-light">The connection is currently: {connectionStatus}</span>
+            <div style={{ overflowY: 'scroll', height: '450px' }} className="box mt-2">
               {messageHistory.map((message: MessageModel) => (
                 <Message key={message.id} message={message} />
               ))}
-              <div ref={bottomRef} />
+              <div ref={bottomRefHistory} />
             </div>
             <div className="field has-addons">
               <input
