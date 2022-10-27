@@ -20,7 +20,7 @@ export function Message({ message }: { message: MessageModel }) {
                 message.name === name ? "is-justify-content-flex-end" : "is-justify-content-flex-start"
             )}
         >
-            <div style={{ borderRadius: '0.8rem'}}
+            <div style={{ borderRadius: '1rem'}}
                 className={classNames(
                     "box py-2 px-2 m-0",
                     message.name === name ? "has-background-info has-text-white" : "has-background-light"

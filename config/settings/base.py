@@ -54,7 +54,7 @@ DATABASES = {
         "PASSWORD": env("CASSANDRA_PASSWORD"),
         "HOST": env("CASSANDRA_HOST"),
         "OPTIONS": {
-            "replication": {"strategy_class": "SimpleStrategy", "replication_factor": 2}
+            "replication": {"strategy_class": "NetworkTopologyStrategy", "replication_factor": 2}
         },
     }
 }

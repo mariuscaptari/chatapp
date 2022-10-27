@@ -31,7 +31,7 @@ export function SearchedMessage({ message }: { message: MessageModel }) {
                 }} className=" has-text-grey">{message.room}</span>
                 </div>
             </div>
-            <div style={{ borderRadius: '0.8rem'}}
+            <div style={{ borderRadius: '1rem'}}
                 className={classNames(
                     "box py-2 px-2 my-1 mx-1",
                     message.name === name ? "has-background-info has-text-white" : "has-background-light"
