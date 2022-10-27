@@ -122,13 +122,12 @@ export function Chat() {
     setSearchMessage("");
   }
 
-
   return (
     <div>
-      <section className="hero is-small is-warning">
+      <section className="hero is-small has-background-info-light">
         <div className="hero-body">
           <p className="title">
-            ChatApp 🎃
+            ChatApp 🍣
           </p>
           <p className="subtitle">
             Web and Clound Computing

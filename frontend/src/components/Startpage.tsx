@@ -39,12 +39,16 @@ export function Startpage(this: any) {
         setRoom(e.target.value)
     }
 
+    // document.body.style.display = 'flex';
+    // document.body.style.minHeight = '100vh';
+    // document.body.style.flexDirection = 'column';
+
     return (
-        <div>
-            <section className="hero is-small is-link">
+        <div style={{ display: 'flex', minHeight: '100vh', flexDirection: 'column'}}>
+            <section className="hero is-small has-background-info-light">
                 <div className="hero-body">
                     <p className="title">
-                        ChatApp 🎃
+                        ChatApp 🍣
                     </p>
                     <p className="subtitle">
                         Web and Cloud Computing
@@ -85,7 +89,7 @@ export function Startpage(this: any) {
                     </div>
                 </div>
             </div>
-            <footer className="footer">
+            <footer className="footer" style={{ marginTop: 'auto'}}>
                 <div className="content has-text-centered">
                     <p>
                         <strong>Chat App</strong> by Marius Captari and Lennard Froma (Group 15). The source code can be

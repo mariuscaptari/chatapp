@@ -23,7 +23,7 @@ export function SearchedMessage({ message }: { message: MessageModel }) {
     return (
         <div
             className={classNames(
-                "is-flex mt-0",
+                "is-flex my-0",
                 message.name === name ? "is-justify-content-flex-end" : "is-justify-content-flex-start"
             )}>
             <div className={"box py-2 px-2 mr-2 has-background-warning"}>
