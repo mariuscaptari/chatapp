@@ -1,0 +1,7 @@
+# General
+# ------------------------------------------------------------------------------
+REDIS_HOST='redis'
+REDIS_PORT=6379
+CASSANDRA_HOST='cassandra'
+CASSANDRA_USER='cassandra'
+CASSANDRA_PASSWORD='cassandra'

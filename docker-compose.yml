@@ -1,0 +1,53 @@
+version: '3'
+
+volumes:
+  chat_app_local_cassandra_data: {}
+
+services:
+  redis:
+    restart: always
+    image: redis:6
+    container_name: chat_app_local_redis
+    ports:
+      - "6379:6379"
+  cassandra:
+    restart: always
+    image: cassandra:4.1
+    container_name: chat_app_local_cassandra
+    ports:
+      - "9042:9042"
+    volumes:
+      - chat_app_local_cassandra_data:/var/lib/cassandra:Z
+      - ./cassandra_config/cassandra.yaml:/etc/cassandra/cassandra.yaml:z
+  django:
+    restart: always
+    build:
+      context: .
+      dockerfile: ./compose/local/django/Dockerfile
+    image: mariuscaptari/django
+    container_name: chat_app_local_django
+    depends_on:
+      - cassandra
+      - redis
+    env_file:
+      - ./.envs/.local/.django
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app:z
+    command: /start
+  frontend:
+    restart: always
+    command: npm start
+    image: mariuscaptari/frontend
+    container_name: chat_app_local_frontend
+    build:
+      context: .
+      dockerfile: ./compose/local/frontend/Dockerfile
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    depends_on:
+      - django
+    volumes:
+      - ./frontend:/app/:z
