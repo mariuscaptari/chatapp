@@ -4,7 +4,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: django-deployment
+  name: django
   labels:
     app: django
 spec:
@@ -18,7 +18,7 @@ spec:
         app: django
     spec:
       containers:
-        - name: django-container
+        - name: django
           image: mariuscaptari/django
           args:
             - /start
@@ -35,7 +35,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: django-ip
+  name: django
 spec:
   type: ClusterIP
   selector:

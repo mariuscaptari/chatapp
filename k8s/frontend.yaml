@@ -4,7 +4,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend-deployment
+  name: frontend
 spec:
   replicas: 3
   selector:
@@ -17,9 +17,10 @@ spec:
     spec:
       containers:
         - args:
-            - npm
-            - start
-          name: frontend-container
+            - serve
+            - -s
+            - build
+          name: frontend
           image: mariuscaptari/frontend
           ports:
             - containerPort: 3000
@@ -31,7 +32,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: frontend-ip
+  name: frontend
 spec:
   type: ClusterIP
   selector:

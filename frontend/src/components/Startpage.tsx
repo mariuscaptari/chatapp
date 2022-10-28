@@ -27,7 +27,6 @@ export function Startpage() {
         setName(e.target.value)
     }
     function handleSubmit() {
-        // setName(e.target.value)
         let formIsValid = true;
 
         if (!name || !room) {
@@ -77,6 +76,7 @@ export function Startpage() {
                     </p>
                 </div>
             </section>
+            <small>You are running this application in <b>{process.env.NODE_ENV}</b> mode.</small>
             <div className="columns is-mobile mt-2">
                 <div className="column is-4 is-offset-4">
                 <label className="label">Room name</label>
