@@ -1,11 +1,22 @@
-import React from 'react';
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import { uniqueNamesGenerator, Config, adjectives, colors, animals, starWars } from 'unique-names-generator';
 import 'bulma/css/bulma.min.css';
 
-export function Startpage(this: any) {
-    const [room, setRoom] = useState("")
-    const [name, setName] = useState("")
+export function Startpage() {
+    const [room, setRoom] = useState("");
+    const [name, setName] = useState("");
+
+    const randNameConfig: Config = {
+        dictionaries: [adjectives, animals],
+        style: 'capital',
+        length: 2,
+    };
+
+    const randRoomConfig: Config = {
+        dictionaries: [starWars],
+        style: 'capital',
+    };
 
     let navigate = useNavigate();
     const routeChange = () => {
@@ -15,28 +26,43 @@ export function Startpage(this: any) {
     function changeName(e: any) {
         setName(e.target.value)
     }
-    function handleChangeName(e: any) {
-        setName(e.target.value)
+    function handleSubmit() {
+        // setName(e.target.value)
         let formIsValid = true;
 
-        if (!name) {
+        if (!name || !room) {
             formIsValid = false;
         }
 
-        if (typeof name !== "undefined") {
-            if (name.match(/[^A-Za-z0-9]/)) {
+        if ((typeof name !== "undefined") && (typeof room !== "undefined")){
+            if ((name.match(/[^A-Za-z0-9_-]/)) || (room.match(/[^A-Za-z0-9_-]/))){
                 formIsValid = false;
             }
         };
-
         if (formIsValid) {
             routeChange()
         } else {
             alert("Invalid room or nickname. Please use only letters and numbers, without any spaces or special characters.");
         }
     }
+
+    const handleKeypressSubmit = (e: { keyCode: number; }) => {
+        if (e.keyCode === 13) {
+          handleSubmit();
+        }
+      };
+
     function handleChangeRoom(e: any) {
         setRoom(e.target.value)
+    }
+
+    function handleRandomName(e: any) {
+        setName(uniqueNamesGenerator(randNameConfig));
+    }
+
+    function handleRandomroom(e: any) {
+        let rndRoom = uniqueNamesGenerator(randRoomConfig).replace(/ /g,"_");
+        setRoom(rndRoom + "_Room");
     }
 
     return (
@@ -53,34 +79,41 @@ export function Startpage(this: any) {
             </section>
             <div className="columns is-mobile mt-2">
                 <div className="column is-4 is-offset-4">
-                    <div className="field">
-                        <label className="label">Room name</label>
-                        <div className="control">
+                <label className="label">Room name</label>
+                    <div className="field has-addons">
+                    <div className="control is-expanded">
                             <input
+                                value={room || ''}
                                 autoFocus
                                 className="input"
                                 type="text"
                                 placeholder="Room name"
                                 onChange={handleChangeRoom}
-                                required
                             />
                         </div>
-                    </div>
-                    <div className="field">
-                        <label className="label">Nickname</label>
                         <div className="control">
-                            <input
+                        <button className="button" onClick={handleRandomroom}>🎲</button>
+                        </div>
+                    </div>
+                    <label className="label">Nickname</label>
+                    <div className="field has-addons">
+                        <div className="control is-expanded">
+                        <input
+                                value={name || ''}
                                 className="input"
                                 type="text"
                                 placeholder="Name"
                                 onChange={changeName}
-                                required
+                                onKeyDown={handleKeypressSubmit}
                             />
+                        </div>
+                        <div className="control">
+                        <button className="button" onClick={handleRandomName}>🎲</button>
                         </div>
                     </div>
                     <div className="field">
                         <div className="control">
-                            <button className="button is-success" onClick={handleChangeName}>Connect</button>
+                            <button className="button is-success" onClick={handleSubmit}>Connect</button>
                         </div>
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { MessageModel } from "../models/Message";
 import { Message } from "./Message";
 import { SearchedMessage } from "./SearchedMessage";
@@ -17,8 +17,8 @@ export function Chat() {
   const [searchMessage, setSearchMessage] = useState("");
 
   const { room, name } = useParams();
-  //const { readyState, sendJsonMessage } = useWebSocket(`ws://localhost:8000/ws/${room}/`, {
-  const { readyState, sendJsonMessage } = useWebSocket(`ws://${window.location.hostname}/ws/${room}/`, {
+  const { readyState, sendJsonMessage } = useWebSocket(`ws://localhost:8000/ws/${room}/`, {
+  //const { readyState, sendJsonMessage } = useWebSocket(`ws://${window.location.hostname}/ws/${room}/`, {
     onOpen: () => {
       console.log("Connected!")
     },
@@ -121,12 +121,6 @@ export function Chat() {
       searchMessage: searchMessage,
     });
     setSearchMessage("");
-  }
-
-  let navigate = useNavigate();
-  const routeChange = () => {
-    let path = room + '/' + name;
-    navigate(path);
   }
 
   return (

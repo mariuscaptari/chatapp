@@ -48,7 +48,7 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
             }
         )
         messages = await self.get_last_messages(room=self.room_name)
-        serialized_messages = await self.serialize_messages(messages, multiple=True)
+        serialized_messages = await self.serialize_messages(messages, many=True)
         await self.send_json(
             {
                 "type": "message_history",
@@ -67,7 +67,7 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
             message = await self.save_message(
                 name=content["name"], room=self.room_name, message=content["message"]
             )
-            serialized_message = await self.serialize_messages(message, multiple=False)
+            serialized_message = await self.serialize_messages(message, many=False)
             print("Received message: ")
             print(serialized_message)
             await self.channel_layer.group_send(
@@ -83,7 +83,7 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
             messages = await self.get_substring_messages(
                 substring=content["searchMessage"]
             )
-            serialized_messages = await self.serialize_messages(messages, multiple=True)
+            serialized_messages = await self.serialize_messages(messages, many=True)
             print("Query result: ", serialized_messages)
             await self.send_json(
                 {
@@ -120,8 +120,11 @@ class ChatConsumer(AsyncJsonWebsocketConsumer):
     @sync_to_async
     def get_rooms(self):
         query_set = Message.objects.all().distinct()
-        return list(map(lambda x: x.room, list(query_set)))
+        room_list = sorted(list(map(lambda x: x.room, list(query_set))))
+        print(room_list)
+        # sort room names alphabetically
+        return room_list
 
     @sync_to_async
-    def serialize_messages(self, messages, multiple):
-        return MessageSerializer(messages, many=multiple).data
+    def serialize_messages(self, messages, many):
+        return MessageSerializer(messages, many=many).data
