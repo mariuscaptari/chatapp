@@ -177,7 +177,7 @@ export function Chat() {
         </div>
         <div className="tile is-parent">
           <div className="tile is-child box">
-            <p className="title"> <small className="has-text-grey-light">Chating as</small> {name} <small className="has-text-grey-light"> inside </small>{room}</p>
+            <p className="title"> <small className="has-text-grey-light">Chatting as</small> {name} <small className="has-text-grey-light"> inside </small>{room}</p>
             <span className="has-text-grey-light">The connection is currently: {connectionStatus} </span>
             <div style={{ overflowY: 'scroll', height: '450px' }} className="box mt-2">
               {messageHistory.map((message: MessageModel) => (

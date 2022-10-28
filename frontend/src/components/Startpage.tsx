@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import { uniqueNamesGenerator, Config, adjectives, colors, animals, starWars } from 'unique-names-generator';
+import { uniqueNamesGenerator, Config, adjectives, animals, starWars } from 'unique-names-generator';
 import 'bulma/css/bulma.min.css';
 
 export function Startpage() {
