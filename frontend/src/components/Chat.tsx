@@ -17,8 +17,8 @@ export function Chat() {
   const [searchMessage, setSearchMessage] = useState("");
 
   const { room, name } = useParams();
-  const { readyState, sendJsonMessage } = useWebSocket(`ws://localhost:8000/ws/${room}/`, {
-  //const { readyState, sendJsonMessage } = useWebSocket(`ws://${window.location.hostname}/ws/${room}/`, {
+  //const { readyState, sendJsonMessage } = useWebSocket(`ws://localhost:8000/ws/${room}/`, {
+  const { readyState, sendJsonMessage } = useWebSocket(`ws://${window.location.hostname}/ws/${room}/`, {
     onOpen: () => {
       console.log("Connected!")
     },
