@@ -145,7 +145,7 @@ export function Chat() {
         <div className="tile is-5 is-vertical is-parent">
           <div className="tile is-child box">
             <p className="title is-4">Rooms</p>
-            <ul style={{ overflowY: 'scroll', height: '180px' }}>
+            <ul style={{ overflowY: 'scroll', height: '150px' }}>
               {roomList.map((room: string, index: number) =>
                 <li key={index}>
                   <Link to={`/${room}/${name}`} className="" >
@@ -157,7 +157,7 @@ export function Chat() {
           </div>
           <div className="tile is-child box">
             <p className="title is-4">Search messages</p>
-            <div style={{ overflowY: 'scroll', height: '200px' }}>
+            <div style={{ overflowY: 'scroll', height: '250px' }}>
               {searchResult.map((message: MessageModel) => (
                 <SearchedMessage key={message.id} message={message} />
               ))}
