@@ -17,7 +17,8 @@ export function Chat() {
   const [searchMessage, setSearchMessage] = useState("");
 
   const { room, name } = useParams();
-  
+
+  // Set url based on prod or dev enviroment
   const server_url = "ws://" + window.location.hostname +
                   (process.env.NODE_ENV === 'development' ? ":8000" : "") +
                   "/ws/" + room + "/";
@@ -125,15 +126,15 @@ export function Chat() {
       searchMessage: searchMessage,
     });
     setSearchMessage("");
-  }
+  };
 
   return (
     <div>
       <section className="hero is-small has-background-info-light">
         <div className="hero-body">
-          <p className="title has-text-info-dark">
-            ChatApp 🍣
-          </p>
+          <Link to="/">
+            <p className="title has-text-info-dark">ChatApp 🍣</p>
+          </Link>
           <p className="subtitle">
             Web and Clound Computing
           </p>
@@ -141,7 +142,7 @@ export function Chat() {
       </section>
 
       <div className="tile is-ancestor">
-        <div className="tile is-4 is-vertical is-parent">
+        <div className="tile is-5 is-vertical is-parent">
           <div className="tile is-child box">
             <p className="title is-4">Rooms</p>
             <ul style={{ overflowY: 'scroll', height: '180px' }}>

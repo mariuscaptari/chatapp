@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { uniqueNamesGenerator, Config, adjectives, animals, starWars } from 'unique-names-generator';
 import 'bulma/css/bulma.min.css';
@@ -64,6 +64,10 @@ export function Startpage() {
         setRoom(rndRoom + "_Room");
     }
 
+    useEffect(() => { 
+        console.log(`You are running this application in ${process.env.NODE_ENV} mode.`)
+        }, []);
+
     return (
         <div style={{ display: 'flex', minHeight: '100vh', flexDirection: 'column' }}>
             <section className="hero is-small has-background-info-light">
@@ -76,7 +80,6 @@ export function Startpage() {
                     </p>
                 </div>
             </section>
-            <small>You are running this application in <b>{process.env.NODE_ENV}</b> mode.</small>
             <div className="columns is-mobile mt-2">
                 <div className="column is-4 is-offset-4">
                 <label className="label">Room name</label>
