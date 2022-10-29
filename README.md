@@ -41,7 +41,7 @@ It also provides high scalability by putting less emphasis on data consistency. 
 
 ---
 
-Cassandra is a KKV store where the two Ks comprise the primary key. The first K is the partition key and is used to determine which node the data lives on and where it is found on disk. The partition contains multiple rows within it and a row within a partition is identified by the second K, which is the clustering key. The clustering key acts as both a primary key within the partition and how the rows are sorted.
+Cassandra is implemented as a KKV store where the two Ks comprise the primary key. The first K is the partition key and is used to determine which node the data lives on and where it is found on disk. The partition contains multiple rows within it and a row within a partition is identified by the second K, which is the clustering key. The clustering key acts as both a primary key within the partition and how the rows are sorted.
 
 These properties combined make for a very effiecient way of querying the database in a chat application.
 
