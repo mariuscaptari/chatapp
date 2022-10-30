@@ -17,7 +17,9 @@ The general data flow of our app is as follows:
 
 ## Multi-tier architecture tech stack
 
-To develop our chat application, we have choosen the following technologies for each tier:
+An overview of our chat application and its components can be seen below:
+
+![App Diagram](App-diagram.svg)
 
 ### Frontend
 
@@ -77,11 +79,11 @@ In a production environment, we need to manage the containers that run the appli
 
 ### Deployment
 
-For deploying  we used Google Kubernetes Engine (GKE)
+The app has been deplpyed using Google Kubernetes Engine (GKE) and its IP has been made public.
 
 ## How to run
 
-To start the app:
+To start the app using the local docker compose configurations:
 
 ```shell
 docker compose up -d
