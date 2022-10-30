@@ -70,7 +70,7 @@ All of our app's services are containerized using Docker. We wrote and uploaded 
 
 ---
 
-In a production environment, we need to manage the containers that run the applications and ensure that there is no downtime. For instance, if a container goes down, another container needs to start. We rely on Kubernetes to manage resources for us and keep our app always available. To achieve this, we make use of the following Kubernetes features:
+In a production environment, we need to manage the containers that run the applications and ensure that there is no downtime. For instance, if a container goes down, another container needs to start as soon as possible. We rely on Kubernetes to manage resources for us and keep our app always available. To achieve this, we make use of the following Kubernetes features:
 
 - Service discovery and load balancing through the use of Ingress Ngninx
 - Storage orchestration for the database volumes
@@ -79,7 +79,7 @@ In a production environment, we need to manage the containers that run the appli
 
 ### Deployment
 
-The app has been deplpyed using Google Kubernetes Engine (GKE) and its IP has been made public.
+The app has been deployed using Google Kubernetes Engine (GKE) and its IP has been made public.
 
 ## How to run
 
@@ -89,4 +89,4 @@ To start the app using the local docker compose configurations:
 docker compose up -d
 ```
 
-The chat app should now be accessible at ```http://localhost:3000/```.
+The chat app should now be accessible at ```http://localhost:3000/```
