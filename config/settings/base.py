@@ -54,7 +54,7 @@ DATABASES = {
         "PASSWORD": env("CASSANDRA_PASSWORD"),
         "HOST": env("CASSANDRA_HOST"),
         "OPTIONS": {
-            "replication": {"strategy_class": "NetworkTopologyStrategy", "replication_factor": 2}
+            "replication": {"strategy_class": "NetworkTopologyStrategy", "DC1": "3"}
         },
     }
 }
@@ -312,7 +312,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [(env("REDIS_HOST"), env.int("REDIS_PORT"))],
+            "hosts": [(env("REDIS_HOST"), 6379)],
         },
     },
 }

@@ -46,3 +46,35 @@ spec:
   hostPath:
     path: /tmp/data/cassandra-data-3
   persistentVolumeReclaimPolicy: Recycle
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: cassandra-data-4
+  labels:
+    type: local
+    app: cassandra
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /tmp/data/cassandra-data-4
+  persistentVolumeReclaimPolicy: Recycle
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: cassandra-data-5
+  labels:
+    type: local
+    app: cassandra
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /tmp/data/cassandra-data-5
+  persistentVolumeReclaimPolicy: Recycle

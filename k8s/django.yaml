@@ -25,6 +25,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: django-config
+            - secretRef:
+                name: django-secret
           ports:
             - containerPort: 8000
 
@@ -53,7 +55,16 @@ metadata:
   name: django-config
 data:
   REDIS_HOST: redis
-  REDIS_PORT: "6379"
   CASSANDRA_HOST: cassandra.default.svc.cluster.local
-  CASSANDRA_USER: "cassandra"
-  CASSANDRA_PASSWORD: "cassandra"
+---
+###########################
+# Config Map
+###########################
+apiVersion: v1
+kind: Secret
+metadata:
+  name: django-secret
+type: Opaque
+data:
+  CASSANDRA_USER: Y2Fzc2FuZHJh
+  CASSANDRA_PASSWORD: Y2Fzc2FuZHJh
