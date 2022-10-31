@@ -2,6 +2,7 @@
 Base settings to build other settings files upon.
 """
 from pathlib import Path
+from cassandra import ConsistencyLevel
 
 import environ
 
@@ -54,7 +55,13 @@ DATABASES = {
         "PASSWORD": env("CASSANDRA_PASSWORD"),
         "HOST": env("CASSANDRA_HOST"),
         "OPTIONS": {
-            "replication": {"strategy_class": "NetworkTopologyStrategy", "DC1": "3"}
+            "replication": {"strategy_class": "NetworkTopologyStrategy", "DC1": "3"},
+            # "connection": {
+            #         # To ensure strong consistency R + W > N
+            #         # Where R=2, W=2 and N=3  -> 2 + 2 > 4
+            #         "consistency": ConsistencyLevel.LOCAL_QUORUM,
+            #         "retry_connect": True
+            #     },
         },
     }
 }

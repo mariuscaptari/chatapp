@@ -64,6 +64,9 @@ CREATE TABLE messages (
 
 The main downside we found with using Cassandra was that when querying the database for matching substrings we had to enable SASIIndex for the content column, which is not ideal and not recommended for production.
 
+---
+We have choosen to go with a replication factor of 3 for our cassandra cluster given that we are running 5 sepparate nodes (kubernetes pods) in production.
+
 ### Containarization and orchestration
 
 All of our app's services are containerized using Docker. We wrote and uploaded the [frontend](https://hub.docker.com/repository/docker/mariuscaptari/frontend) and [backend](https://hub.docker.com/repository/docker/mariuscaptari/frontend) images to Docker Hub. During the first stages of development, a local testing a docker compose file was used.
@@ -79,11 +82,11 @@ In a production environment, we need to manage the containers that run the appli
 
 ### Deployment
 
-The app has been deployed using Google Kubernetes Engine (GKE) and its IP has been made public.
+The app has been deployed using Google Kubernetes Engine (GKE) and its IP has been made public. The main services (frontend, backend and database) are all replicated. Both the frontend and backend services have 3 running replicas, while the cassandra service has 5 replicas.
 
 ## How to run
 
-To start the app using the local docker compose configurations:
+To start the app locally using the docker compose configurations:
 
 ```shell
 docker compose up -d
