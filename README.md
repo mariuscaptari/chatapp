@@ -39,7 +39,7 @@ An overview of our chat application and its main components can be seen below:
 
 Cassandra is a database that trades strong consistency for availability, which in the case of a real time chat application is ideal. Furthermore, Cassandra excels at storing time-series data (such as our chat data), where old data does not need to be updated, and reads are very fast.
 
-It also provides high scalability by putting less emphasis on data consistency. Consistency typically requires a master node to track and enforce what consistency means either based on rules or previously stored data.
+It also provides high scalability by putting less emphasis on data consistency. Consistency typically requires a master node to track and enforce what consistency means either based on rules or previously stored data. However, in Cassandra there are no Master nodes, since all nodes share the same hierarchical level.
 
 ---
 
@@ -65,7 +65,9 @@ CREATE TABLE messages (
 The main downside we found with using Cassandra was that when querying the database for matching substrings we had to enable SASIIndex for the content column, which is not ideal and not recommended for production.
 
 ---
-We have choosen to go with a replication factor of 3 for our cassandra cluster given that we are running 5 sepparate nodes (kubernetes pods) in production.
+We have choosen to go with a replication factor of 3 for our cassandra cluster to ensure that even if we lose 1 or 2 pods, the application should still be available.
+
+
 
 ### Containarization and orchestration
 
@@ -93,3 +95,27 @@ docker compose up -d
 ```
 
 The chat app should now be accessible at ```http://localhost:3000/```
+
+To run the production deployment first start minikube:
+
+```shell
+minikube start
+minikube addons enable ingress
+```
+
+Then start all services in the following order:
+
+```shell
+kubectl apply -f cassandra-service.yaml
+kubectl create -f local-volumes.yaml
+kubectl apply -f cassandra-statefulset.yaml
+```
+
+```shell
+kubectl apply -f redis.yaml
+kubectl apply -f django.yaml
+kubectl apply -f frontend.yaml
+kubectl apply -f ingress-service.yaml
+```
+
+The app is then available at the minikube ip (in some cases a minikube tunnel needs to be open first).
