@@ -55,6 +55,7 @@ metadata:
   name: django-config
 data:
   REDIS_HOST: redis
+  REDIS_PORT: "6379"
   CASSANDRA_HOST: cassandra.default.svc.cluster.local
 ---
 ###########################
