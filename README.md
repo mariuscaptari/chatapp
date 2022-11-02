@@ -17,7 +17,6 @@ The general data flow of our app is as follows:
 5. Backend broadcasts message to all subscribers of channel
 6. Backend stores message in database
 
-
 ## Multi-tier architecture tech stack
 
 An overview of our chat application and its main components can be seen below:
@@ -69,7 +68,7 @@ CREATE TABLE messages (
 The main downside we found with using Cassandra was that when querying the database for matching substrings we had to enable SASIIndex for the content column, which is not ideal and not recommended for production.
 
 ---
-We have choosen to go with a replication factor of 3 for our cassandra cluster to ensure that even if we lose 1 or 2 pods, the application should still be available. For a highly available system we went with read and write consistency values of 1. This means that we do not have strong consistency W + R < 3, however, in a chat application such us ours we decided to prioritize high availability.
+We have choosen to go with a replication factor of 3 for our cassandra cluster to ensure that even if we lose 1 or 2 pods, the application should still be available. For a highly available system we went with read and write consistency values of 1. This means that we do not have strong consistency W + R < 3, however, in a chat application such us ours we decided to prioritize high availability and rely on Cassandra's eventual consistency.
 
 ### Containarization and orchestration
 
@@ -120,4 +119,4 @@ kubectl apply -f frontend.yaml
 kubectl apply -f ingress-service.yaml
 ```
 
-The app is then available at the minikube ip (in some cases a minikube tunnel needs to be open first).
+The app is then available at the minikube local ip (in some cases a minikube tunnel needs to be open first).
