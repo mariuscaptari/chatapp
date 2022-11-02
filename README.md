@@ -15,7 +15,7 @@ The general data flow of our app is as follows:
 3. User types message and sends it to the current chat room
 4. Backend receives message from frontend
 5. Backend broadcasts message to all subscribers of channel
-6. Backend stores message in database
+6. Backend stores message in database asynchronously
 
 ## Multi-tier architecture tech stack
 
