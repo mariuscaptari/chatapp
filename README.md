@@ -4,9 +4,9 @@
 
 ## High level view
 
-Our Chat App allows users to enter a chat room with a choosen nickname and chat with others that are in the same room. Its simple design allows for quick in and out conversations over the internet with strangers. When entering a new room, the previous chat history is loaded, so users know what the current topic of conversation is. In addition to this, user can also perform a search across all messages for any given text.
+Our Chat App allows users to enter a chat room with a choosen nickname and chat with others that are in the same room. Its simple design allows for quick in and out conversations over the internet with strangers. When entering a new room, the previous chat history is loaded, so users know what the current topic of conversation is. Furthermore, we allow the feature of searching across all messages for any given text and the option for a user to switch to any of the already existing rooms.
 
-We adopt the use of WebSockets as an alternative to HTTP communication to serve our real-time demands. Web socket connections offer a long lived, bidirectional communication channel between client and server. Once established, the channel is kept open, offering a very fast connection with low latency and overhead, ideal for such chat applications.
+We make use of WebSockets as an alternative to HTTP communication to serve our real-time demands. Web socket connections offer a long lived, bidirectional communication channel between client and server. Once established, the channel is kept open, offering a very fast connection with low latency and overhead, ideal for our chat application.
 
 The general data flow of our app is as follows:
 
@@ -38,7 +38,7 @@ An overview of our chat application and its main components can be seen below:
 
 ### Database
 
-While we use **Redis** as a message broker for our backend, it is also used a key-value store, making it a non primary databse used by our application.
+While we use **Redis** as a message broker for our backend, it is also used a key-value store This makes it a secondary database used within our application, given that is not used to store persistente data.
 
 *Why **Cassandra?***
 
@@ -70,7 +70,7 @@ CREATE TABLE messages (
 The main downside we found with using Cassandra was that when querying the database for matching substrings we had to enable SASIIndex for the content column, which is not ideal and not recommended for production.
 
 ---
-We have choosen to go with a replication factor of 3 for our cassandra cluster to ensure that even if we lose 1 or 2 pods, the application should still be available. For a highly available system we went with read and write consistency values of 1. This means that we do not have strong consistency W + R < 3, however, in a chat application such us ours we decided to prioritize high availability and rely on Cassandra's eventual consistency.
+We have choosen to go with a replication factor of 3 for our cassandra cluster to ensure that even if we lose 1 or 2 pods, the application should still be available. For a highly available system we went with read and write consistency values of 1. This means that we do not have strong consistency W + R < 3, however, in a chat application such us ours we decided to prioritize high availability and rely on Cassandra's eventual consistency after the operations are done.
 
 ### Containarization and orchestration
 
