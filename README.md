@@ -11,9 +11,12 @@ We adopt the use of WebSockets as an alternative to HTTP communication to serve 
 The general data flow of our app is as follows:
 
 1. User connects to frontend server and establishes a web socket connection
-2. User types message and sends it to the current chat room
-3. Backend server receives this message from the frontend
-4. Backend server broadcasts message to all other chat participants
+2. Message history of current room is loaded from backend
+3. User types message and sends it to the current chat room
+4. Backend receives message from frontend
+5. Backend broadcasts message to all subscribers of channel
+6. Backend stores message in database
+
 
 ## Multi-tier architecture tech stack
 
@@ -23,6 +26,7 @@ An overview of our chat application and its main components can be seen below:
 
 ### Frontend
 
+- **Typescript** for improved code readability and type safety.
 - **React** enables us the ability to have a SPA architecture where we load the HTML once and from there request all content of the page via the websocket connection.
 - **BulmaCSS** as most other CSS frameworks, helps us create a good enough UI with minimal code.
 - **Nginx Ingress** is used to expose, load balance and forward all incoming requests towards our frontend service inside the Kubernetes cluster.
