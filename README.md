@@ -38,6 +38,8 @@ An overview of our chat application and its main components can be seen below:
 
 ### Database
 
+While we use **Redis** as a message broker for our backend, it is also used a key-value store, making it a non primary databse used by our application.
+
 *Why **Cassandra?***
 
 Cassandra is a database that trades strong consistency for availability, which in the case of a real time chat application is ideal. Furthermore, Cassandra excels at storing time-series data (such as our chat data), where old data does not need to be updated, and reads are very fast.
