@@ -38,6 +38,8 @@ An overview of our chat application and its main components can be seen below:
 
 An important node was the support of **Async** communication from Django, which allows our app to feel more responsive as our server can have fewer indle threads under heavy load. This is especially true in the case of operations on the database (considerable long delays). Using Async functions allows the resources to be free for other needs until the request is returned (by a callback).
 
+This asynchronous nature provides significantly better scalability and quality of service.
+
 ### Database
 
 While we use **Redis** as a message broker for our backend, it is also used a key-value store This makes it a secondary database used within our application, given that is not used to store persistente data.
