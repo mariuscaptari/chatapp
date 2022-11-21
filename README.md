@@ -1,6 +1,4 @@
-# Web and Cloud Computing - Group 15
-
-**Chat App** made by Marius and Lennard.
+# Chat App
 
 ## High level view
 
