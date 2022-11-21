@@ -15,7 +15,7 @@ The general data flow of our app is as follows:
 5. Backend broadcasts message to all subscribers of channel
 6. Backend stores message in database asynchronously
 
-## Multi-tier architecture tech stack
+## App architecture
 
 An overview of our chat application and its main components can be seen below:
 
