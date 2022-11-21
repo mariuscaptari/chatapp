@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import { uniqueNamesGenerator, Config, adjectives, colors, animals, starWars } from 'unique-names-generator';
+import { uniqueNamesGenerator, Config, adjectives, animals, starWars } from 'unique-names-generator';
 import 'bulma/css/bulma.min.css';
 
 export function Startpage() {
@@ -27,7 +27,6 @@ export function Startpage() {
         setName(e.target.value)
     }
     function handleSubmit() {
-        // setName(e.target.value)
         let formIsValid = true;
 
         if (!name || !room) {
@@ -64,6 +63,10 @@ export function Startpage() {
         let rndRoom = uniqueNamesGenerator(randRoomConfig).replace(/ /g,"_");
         setRoom(rndRoom + "_Room");
     }
+
+    useEffect(() => { 
+        console.log(`You are running this application in ${process.env.NODE_ENV} mode.`)
+        }, []);
 
     return (
         <div style={{ display: 'flex', minHeight: '100vh', flexDirection: 'column' }}>

@@ -4,11 +4,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: django-deployment
+  name: django
   labels:
     app: django
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: django
@@ -18,13 +18,15 @@ spec:
         app: django
     spec:
       containers:
-        - name: django-container
+        - name: django
           image: mariuscaptari/django
           args:
             - /start
           envFrom:
             - configMapRef:
                 name: django-config
+            - secretRef:
+                name: django-secret
           ports:
             - containerPort: 8000
 
@@ -35,7 +37,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: django-ip
+  name: django
 spec:
   type: ClusterIP
   selector:
@@ -55,5 +57,15 @@ data:
   REDIS_HOST: redis
   REDIS_PORT: "6379"
   CASSANDRA_HOST: cassandra.default.svc.cluster.local
-  CASSANDRA_USER: "cassandra"
-  CASSANDRA_PASSWORD: "cassandra"
+---
+###########################
+# Config Map
+###########################
+apiVersion: v1
+kind: Secret
+metadata:
+  name: django-secret
+type: Opaque
+data:
+  CASSANDRA_USER: Y2Fzc2FuZHJh
+  CASSANDRA_PASSWORD: Y2Fzc2FuZHJh

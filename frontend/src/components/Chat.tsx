@@ -17,8 +17,13 @@ export function Chat() {
   const [searchMessage, setSearchMessage] = useState("");
 
   const { room, name } = useParams();
-  const { readyState, sendJsonMessage } = useWebSocket(`ws://localhost:8000/ws/${room}/`, {
-  //const { readyState, sendJsonMessage } = useWebSocket(`ws://${window.location.hostname}/ws/${room}/`, {
+
+  // Set url based on prod or dev enviroment
+  const server_url = "ws://" + window.location.hostname +
+                  (process.env.NODE_ENV === 'development' ? ":8000" : "") +
+                  "/ws/" + room + "/";
+
+  const { readyState, sendJsonMessage } = useWebSocket(server_url, {
     onOpen: () => {
       console.log("Connected!")
     },
@@ -121,15 +126,15 @@ export function Chat() {
       searchMessage: searchMessage,
     });
     setSearchMessage("");
-  }
+  };
 
   return (
     <div>
       <section className="hero is-small has-background-info-light">
         <div className="hero-body">
-          <p className="title has-text-info-dark">
-            ChatApp 🍣
-          </p>
+          <Link to="/">
+            <p className="title has-text-info-dark">ChatApp 🍣</p>
+          </Link>
           <p className="subtitle">
             Web and Clound Computing
           </p>
@@ -137,10 +142,10 @@ export function Chat() {
       </section>
 
       <div className="tile is-ancestor">
-        <div className="tile is-4 is-vertical is-parent">
+        <div className="tile is-5 is-vertical is-parent">
           <div className="tile is-child box">
             <p className="title is-4">Rooms</p>
-            <ul style={{ overflowY: 'scroll', height: '180px' }}>
+            <ul style={{ overflowY: 'scroll', height: '150px' }}>
               {roomList.map((room: string, index: number) =>
                 <li key={index}>
                   <Link to={`/${room}/${name}`} className="" >
@@ -152,7 +157,7 @@ export function Chat() {
           </div>
           <div className="tile is-child box">
             <p className="title is-4">Search messages</p>
-            <div style={{ overflowY: 'scroll', height: '200px' }}>
+            <div style={{ overflowY: 'scroll', height: '250px' }}>
               {searchResult.map((message: MessageModel) => (
                 <SearchedMessage key={message.id} message={message} />
               ))}
@@ -177,7 +182,7 @@ export function Chat() {
         </div>
         <div className="tile is-parent">
           <div className="tile is-child box">
-            <p className="title"> <small className="has-text-grey-light">Chating as</small> {name} <small className="has-text-grey-light"> inside </small>{room}</p>
+            <p className="title"> <small className="has-text-grey-light">Chatting as</small> {name} <small className="has-text-grey-light"> inside </small>{room}</p>
             <span className="has-text-grey-light">The connection is currently: {connectionStatus} </span>
             <div style={{ overflowY: 'scroll', height: '450px' }} className="box mt-2">
               {messageHistory.map((message: MessageModel) => (
