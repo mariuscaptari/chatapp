@@ -1,5 +1,7 @@
 # Chat App
 
+![Demo Video](demo.mp4)
+
 ## High level view
 
 Our Chat App allows users to enter a chat room with a choosen nickname and chat with others that are in the same room. Its simple design allows for quick in and out conversations over the internet with strangers. When entering a new room, the previous chat history is loaded, so users know what the current topic of conversation is. Furthermore, we allow the feature of searching across all messages for any given text and the option for a user to switch to any of the already existing rooms.

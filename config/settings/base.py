@@ -55,11 +55,11 @@ DATABASES = {
         "PASSWORD": env("CASSANDRA_PASSWORD"),
         "HOST": env("CASSANDRA_HOST"),
         "OPTIONS": {
-            "replication": {"strategy_class": "NetworkTopologyStrategy", "DC1": 3},
+            "replication": {"strategy_class": "SimpleStrategy", "replication_factor":3},
             "connection": {
                     # To ensure strong consistency R + W > N
                     # Where R=2, W=2 and N=3  -> 2 + 2 > 4
-                    "consistency": ConsistencyLevel.ONE,
+                    # "consistency": ConsistencyLevel.ONE,
                     "retry_connect": True
                 },
         },
