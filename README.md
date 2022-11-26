@@ -1,6 +1,6 @@
 # Chat App
 
-![Demo Video](demo.mp4)
+![Demo Video](https://user-images.githubusercontent.com/35547739/204097405-ae326a56-9e40-48b6-b468-17184057786d.mp4)
 
 ## High level view
 
